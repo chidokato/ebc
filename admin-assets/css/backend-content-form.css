@@ -1,0 +1,32 @@
+.backend-content-form .content-image-dropzone--cover {
+    height: 205px;
+}
+
+.backend-content-form .content-image-dropzone--location {
+    height: 176px;
+}
+
+.backend-content-form .content-image-dropzone--floor-plan {
+    height: 180px;
+}
+
+.backend-content-form .gallery-picker-button {
+    width: 42px;
+    height: 42px;
+}
+
+.backend-content-form .gallery-picker-icon {
+    font-size: 24px;
+    color: #7b7b7b;
+}
+
+.backend-content-form .gallery-item-thumb {
+    width: 72px;
+    height: 72px;
+}
+
+.backend-content-form .gallery-remove-button {
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+}
