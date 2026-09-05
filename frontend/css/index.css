@@ -210,7 +210,7 @@ header nav .container,
 .service-experience-heading p {font-size:14px;line-height:1.5;margin:0;}
 .service-description {font-size:14px;line-height:1.5;margin:0;}
 .service-description p {margin:0;}
-.event-slider {box-sizing:border-box;width:100%;margin:0 auto;max-width:1100px;overflow:hidden;padding:35px 70px 45px;position:relative;}
+.event-slider {box-sizing:border-box;width:100%;margin:0 auto;max-width:1100px;overflow:hidden;padding:35px 0;position:relative;}
 .event-slider .swiper-wrapper {align-items:stretch;}
 .event-slider .swiper-slide {position:relative;display:flex;height:auto;min-height:430px;overflow:hidden;background:#91703c;opacity:0;visibility:hidden;transform:perspective(900px) rotateY(0deg) scale(.88);transition:transform .5s ease,opacity .5s ease;}
 .event-slider .swiper-slide-prev {visibility:visible;transform:perspective(900px) rotateY(8deg) scale(.88);transform-origin:right center;opacity:.75;}
@@ -223,9 +223,9 @@ header nav .container,
 .event-slider .swiper-button-prev {left:16px;}
 .event-slider .swiper-button-next {right:16px;}
 .event-card {box-sizing:border-box;background:#91703c;color:#fff;display:flex;flex-direction:column;width:100%;min-height:430px;padding:9px 9px 25px;text-align:center;}
-.event-card-image {background-position:center;background-size:cover;border-radius:6px;flex:0 0 188px;height:188px;margin:0 0 14px;position:relative;}
+.event-card-image {background-position:center;background-size:cover;border-radius:6px;flex:0 0 260px;height:260px;margin:0 0 14px;position:relative;}
 .event-card-image::after {display:none;}
-.event-card h3 {font-size:18px;font-weight:700;line-height:1.05;margin:0 11px 20px;text-transform:uppercase;}
+.event-card h3 {font-size:18px;font-weight:700;line-height:1.35;margin:0 11px 13px;text-transform:uppercase;}
 .event-card p {font-size:14px;line-height:1.35;margin:0;text-align:justify;}
 .event-card-content {font-size:14px;line-height:1.35;text-align:justify;padding:0 11px;}
 .event-card-content p {margin:0;}

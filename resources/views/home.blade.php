@@ -88,7 +88,7 @@
 							<div class="swiper-slide">
 								<article class="ebc-benefit-card">
 									@if($benefit->icon_path)<img class="ebc-benefit-icon" src="{{ asset($benefit->icon_path) }}" alt="">@endif
-									<h2 class="font-wasted-vindey">{{ $benefit->title }}</h2>
+									<h2 class="">{{ $benefit->title }}</h2>
 									<span class="ebc-card-mark" aria-hidden="true"></span>
 									<div class="ebc-benefit-card-content">{!! $benefit->content !!}</div>
 								</article>
