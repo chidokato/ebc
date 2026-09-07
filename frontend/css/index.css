@@ -8,6 +8,7 @@ html {scroll-behavior:smooth;}
 
 header nav .container,
 .sec-ebc-benefits > .container,
+.ebc-benefits-frame > .container,
 .sec-ballroom > .container,
 .sec-elite-suite > .container,
 .sec-flex-suite > .container,
@@ -103,7 +104,7 @@ header nav .container,
 .ebc-event-rich-content p:nth-child(2) {font-size:.72em;letter-spacing:-.055em;}
 .ebc-event-rich-content p:nth-child(3) {display:block;}
 .ebc-benefit-slider {position:relative;}
-.ebc-benefit-slider .swiper {padding:50px 8px 0px;     margin: 0px 40px;}
+.ebc-benefit-slider .swiper {padding:50px 0 20px;margin:0;}
 .ebc-benefit-card {background:rgb(255 255 255 / 96%);border-radius:10px;box-shadow:0 8px 14px rgb(51 33 12 / 24%);color:#4a321d;display:flex;flex-direction:column;height:244px;padding:18px 16px 16px;text-align:center;}
 .ebc-benefit-card > i {color:#ad7e3f;font-size:31px;line-height:1;margin-bottom:14px;}
 .ebc-benefit-icon {height:31px;margin:0 auto 14px;max-width:56px;object-fit:contain;}
@@ -276,8 +277,8 @@ header nav .container,
 
 .sec-elite-club {background-color:#39250f;background-image:var(--elite-club-background);background-position:center;background-repeat:no-repeat;background-size:cover;min-height:370px;position:relative;}
 .sec-elite-club::before {background:linear-gradient(90deg,rgb(35 21 7 / 94%) 0%,rgb(48 29 9 / 72%) 34%,rgb(48 29 9 / 6%) 68%);content:'';inset:0;position:absolute;}
-.sec-elite-club > .container {min-height:370px;position:relative;}
-.elite-club-content {color:#fff;max-width:390px;padding:72px 0 52px;position:relative;z-index:1;}
+.sec-elite-club > .container {min-height:500px;position:relative;}
+.elite-club-content {color:#fff;max-width:490px;padding:72px 0 52px;position:relative;z-index:1;}
 .elite-club-content h2 {font-family:Georgia,serif;font-size:clamp(36px,4vw,56px);font-weight:400;letter-spacing:-.05em;line-height:1;margin:0 0 4px;text-transform:uppercase;}
 .elite-club-content > span {display:block;font-size:1.4rem;margin-bottom:32px;}
 .elite-club-description {font-size:14px;line-height:1.45;margin:0 0 26px;}
@@ -285,7 +286,7 @@ header nav .container,
 .elite-club-cta {background:#d7b47c;border:1px solid rgb(255 255 255 / 48%);color:#fff;display:inline-block;font-size:16px;font-weight:700;min-width:210px;padding:8px 28px;text-align:center;text-transform:uppercase;transition:background-color .2s ease;}
 .elite-club-cta:hover {background:#b98c4b;color:#fff;}
 
-.sec-consultation {background-color:#553017;background-image:linear-gradient(90deg,rgb(83 36 16 / 82%),rgb(93 42 19 / 58%)),var(--consultation-background);background-position:center;background-repeat:no-repeat;background-size:cover;position:relative;}
+.sec-consultation {background-color:#553017;background-image:linear-gradient(90deg,rgb(83 36 16 / 82%),rgb(93 42 19 / 58%)),var(--consultation-background);background-position:center;background-repeat:no-repeat;background-size:cover;background-attachment:fixed;position:relative;}
 .consultation-layout {align-items:center;display:grid;gap:clamp(40px,9vw,150px);grid-template-columns:minmax(0,1fr) minmax(330px,460px);min-height:560px;padding:42px clamp(28px,7vw,130px);}
 .consultation-intro {color:#fff;max-width:390px;}
 .consultation-intro h2 {font-family:Georgia,serif;font-size:3rem;font-weight:400;letter-spacing:-.05em;line-height:1;margin:0 0 10px;}

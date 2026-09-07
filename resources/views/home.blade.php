@@ -77,33 +77,35 @@
 @php($benefitIcons = ['icon-location', 'icon-stretch', 'icon-grid', 'icon-star-fill', 'icon-building-filled'])
 @if($aboutSection)
 <section class="sec-ebc-benefits" id="about">
-	<div class="container ebc-benefits-frame" @if($aboutSection?->images->isNotEmpty() || $aboutSection?->image_path) style="--about-background:url('{{ asset($aboutSection->images->first()?->path ?: $aboutSection->image_path) }}')" @endif>
-		<div class="ebc-event-copy">
-			<img class="ebc-event-logo" src="{{ asset($aboutSection->icon_path ?: 'frontend/img/logo.png') }}" alt="Elite Business Center">
-			@if($aboutSection?->content)
-				<div class="ebc-event-rich-content">{!! $aboutSection->content !!}</div>
-			@endif
-		</div>
-		<div class="ebc-benefit-slider">
-			<div class="swiper">
-				<div class="swiper-wrapper">
-					@if($aboutSection?->children->isNotEmpty())
-						@foreach($aboutSection->children as $benefit)
-							<div class="swiper-slide">
-								<article class="ebc-benefit-card">
-									@if($benefit->icon_path)<img class="ebc-benefit-icon" src="{{ asset($benefit->icon_path) }}" alt="">@endif
-									<h2 class="">{{ $benefit->title }}</h2>
-									<span class="ebc-card-mark" aria-hidden="true"></span>
-									<div class="ebc-benefit-card-content">{!! $benefit->content !!}</div>
-								</article>
-							</div>
-						@endforeach
-					@endif
-				</div>
-				<div class="swiper-pagination"></div>
+	<div class="ebc-benefits-frame" @if($aboutSection?->images->isNotEmpty() || $aboutSection?->image_path) style="--about-background:url('{{ asset($aboutSection->images->first()?->path ?: $aboutSection->image_path) }}')" @endif>
+		<div class="container">
+			<div class="ebc-event-copy">
+				<img class="ebc-event-logo" src="{{ asset($aboutSection->icon_path ?: 'frontend/img/logo.png') }}" alt="Elite Business Center">
+				@if($aboutSection?->content)
+					<div class="ebc-event-rich-content">{!! $aboutSection->content !!}</div>
+				@endif
 			</div>
-			<button class="swiper-button-prev" type="button" aria-label="Thẻ trước"><i class="icon-prev-thin"></i></button>
-			<button class="swiper-button-next" type="button" aria-label="Thẻ tiếp theo"><i class="icon-next-thin"></i></button>
+			<div class="ebc-benefit-slider">
+				<div class="swiper">
+					<div class="swiper-wrapper">
+						@if($aboutSection?->children->isNotEmpty())
+							@foreach($aboutSection->children as $benefit)
+								<div class="swiper-slide">
+									<article class="ebc-benefit-card">
+										@if($benefit->icon_path)<img class="ebc-benefit-icon" src="{{ asset($benefit->icon_path) }}" alt="">@endif
+										<h2 class="">{{ $benefit->title }}</h2>
+										<span class="ebc-card-mark" aria-hidden="true"></span>
+										<div class="ebc-benefit-card-content">{!! $benefit->content !!}</div>
+									</article>
+								</div>
+							@endforeach
+						@endif
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<button class="swiper-button-prev" type="button" aria-label="Thẻ trước"><i class="icon-prev-thin"></i></button>
+				<button class="swiper-button-next" type="button" aria-label="Thẻ tiếp theo"><i class="icon-next-thin"></i></button>
+			</div>
 		</div>
 	</div>
 </section>
