@@ -4,11 +4,11 @@
 <base href="{{ asset('frontend') }}/">
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<title>Elite Business Center</title>
+<title>{{ $websiteSettings->seo_title ?: $websiteSettings->title }}</title>
 <meta name="generator" content="Bootply" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+@include('partials.website-meta', ['seoPageTitle' => $websiteSettings->seo_title ?: $websiteSettings->title])
 
 <!------------------- CSS ------------------->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,6 +18,7 @@
 <link href="css/index.css?v={{ filemtime(base_path('frontend/css/index.css')) }}" rel="stylesheet">
 
 <!------------------- FONT ------------------->
+{!! $websiteSettings->head_code !!}
 </head>
 
 <body>
@@ -30,7 +31,7 @@
 				<details class="elite-language"><summary><svg class="elite-language-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.2 3.3 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.3-5.2-3.3-8.5S9.8 5.9 12 3.5Z"></path></svg>{{ $languages[$locale] }}</summary>@foreach ($languages as $code => $label) @if ($code !== $locale)<a href="{{ route('home', ['locale' => $code]) }}">{{ $label }}</a>@endif @endforeach</details>
 				@foreach ($headerMenus->take(2) as $menu)<a href="{{ $menu->url }}">{{ $menu->label }}</a>@endforeach
 			</div>
-			<a class="elite-nav-logo" href="{{ route('home', ['locale' => $locale]) }}" aria-label="Elite Business Center"><img src="img/logo-trang.png" alt="Elite Business Center"></a>
+			<a class="elite-nav-logo" href="{{ route('home', ['locale' => $locale]) }}" aria-label="Elite Business Center"><img src="{{ asset($websiteSettings->logo_path ?: 'frontend/img/logo-trang.png') }}" alt="{{ $websiteSettings->title }}"></a>
 			<div class="elite-nav-right">@foreach ($headerMenus->slice(2) as $menu)<a class="{{ $loop->last ? 'elite-nav-cta' : '' }}" href="{{ $menu->url }}">{{ $menu->label }}</a>@endforeach</div>
 		</div>
 	</nav>
@@ -249,7 +250,7 @@
 	<div class="container">
 		<div class="elite-footer-main">
 			<div class="elite-footer-brand">
-				<img src="img/logo-trang.png" alt="Elite Business Center">
+				<img src="{{ asset($websiteSettings->logo_path ?: 'frontend/img/logo-trang.png') }}" alt="{{ $websiteSettings->title }}">
 			</div>
 			<div class="elite-footer-links">
 				<h3>Về Chúng Tôi</h3>
@@ -307,5 +308,6 @@
     })();
 </script>
 
+{!! $websiteSettings->footer_code !!}
 </body>
 </html>
