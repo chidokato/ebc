@@ -10,11 +10,11 @@
     <p class="text-muted">Cài đặt chung cho tất cả ngôn ngữ, áp dụng trên trang chủ và trang tin tức.</p>
     <div class="mb-3"><label class="form-label" for="title">Tiêu đề website</label><input class="form-control" id="title" name="title" maxlength="255" required value="{{ old('title', $settings->title) }}"></div>
     <div class="row g-3">
-        @foreach(['logo' => 'Logo', 'favicon' => 'Favicon'] as $field => $label)
-        <div class="col-md-6">
+        @foreach(['logo' => 'Logo', 'white_logo' => 'Logo trắng', 'favicon' => 'Favicon'] as $field => $label)
+        <div class="col-md-4">
             <label class="form-label" for="{{ $field }}_file">{{ $label }}</label>
-            <input class="form-control" type="file" id="{{ $field }}_file" name="{{ $field }}_file" accept="{{ $field === 'logo' ? '.jpg,.jpeg,.png,.webp,.svg' : '.ico,.png,.svg' }}">
-            <small class="text-muted">{{ $field === 'logo' ? 'JPG, PNG, WebP, SVG; tối đa 5 MB. Dùng ở đầu và chân trang.' : 'ICO, PNG, SVG; tối đa 1 MB.' }}</small>
+            <input class="form-control" type="file" id="{{ $field }}_file" name="{{ $field }}_file" accept="{{ $field !== 'favicon' ? '.jpg,.jpeg,.png,.webp,.svg' : '.ico,.png,.svg' }}">
+            <small class="text-muted">{{ $field !== 'favicon' ? 'JPG, PNG, WebP, SVG; tối đa 5 MB.' : 'ICO, PNG, SVG; tối đa 1 MB.' }} @if($field === 'white_logo')Dùng trên nền tối ở đầu và chân trang.@endif</small>
             @if($settings->{$field.'_path'})
             <div class="mt-2"><img src="{{ asset($settings->{$field.'_path'}) }}" alt="{{ $label }} hiện tại" class="rounded border bg-secondary p-2" style="max-width:220px;max-height:90px"></div>
             <label class="form-check mt-2"><input type="checkbox" class="form-check-input" name="remove_{{ $field }}" value="1" @checked(old('remove_'.$field))><span class="form-check-label">Xóa {{ $label }} đã tải lên, dùng mặc định</span></label>

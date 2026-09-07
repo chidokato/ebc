@@ -28,9 +28,11 @@ class WebsiteSettingController extends Controller
             'favicon_file' => ['nullable', 'file', 'mimes:ico,png,svg', 'max:1024'],
             'remove_logo' => ['nullable', 'boolean'],
             'remove_favicon' => ['nullable', 'boolean'],
+            'white_logo_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
+            'remove_white_logo' => ['nullable', 'boolean'],
         ]);
         $settings = WebsiteSetting::current();
-        foreach (['logo', 'favicon'] as $asset) {
+        foreach (['logo', 'white_logo', 'favicon'] as $asset) {
             if ($request->boolean('remove_'.$asset)) $data[$asset.'_path'] = null;
             if ($request->hasFile($asset.'_file')) {
                 $file = $request->file($asset.'_file');
@@ -40,7 +42,7 @@ class WebsiteSettingController extends Controller
                     $file->move(base_path('uploads/settings'), $filename);
                     $data['favicon_path'] = 'uploads/settings/'.$filename;
                 } else {
-                    $data['logo_path'] = ImageResizer::store($file, 'uploads/settings');
+                    $data[$asset.'_path'] = ImageResizer::store($file, 'uploads/settings');
                 }
             }
             unset($data[$asset.'_file'], $data['remove_'.$asset]);

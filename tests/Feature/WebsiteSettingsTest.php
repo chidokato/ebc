@@ -36,16 +36,17 @@ class WebsiteSettingsTest extends TestCase
         $this->actingAs(User::factory()->create(['is_admin' => true]));
         $paths = [];
         try {
-            $this->put('/admin/settings', ['title' => 'Brand', 'logo_file' => UploadedFile::fake()->image('logo.png'), 'favicon_file' => UploadedFile::fake()->image('favicon.png', 32, 32)])->assertSessionHasNoErrors();
+            $this->put('/admin/settings', ['title' => 'Brand', 'logo_file' => UploadedFile::fake()->image('logo.png'), 'white_logo_file' => UploadedFile::fake()->image('white-logo.png'), 'favicon_file' => UploadedFile::fake()->image('favicon.png', 32, 32)])->assertSessionHasNoErrors();
             $settings = WebsiteSetting::current();
-            $paths = [$settings->logo_path, $settings->favicon_path];
+            $paths = [$settings->logo_path, $settings->favicon_path, $settings->white_logo_path];
             foreach ($paths as $path) {
                 $this->assertFileExists(base_path($path));
                 $this->get('/vi')->assertSee(asset($path), false);
             }
             $this->put('/admin/settings', ['title' => 'Brand updated'])->assertSessionHasNoErrors();
             $this->assertSame($paths[0], WebsiteSetting::current()->logo_path);
-            $this->put('/admin/settings', ['title' => 'Brand', 'remove_logo' => 1, 'remove_favicon' => 1])->assertSessionHasNoErrors();
+            $this->put('/admin/settings', ['title' => 'Brand', 'remove_logo' => 1, 'remove_favicon' => 1, 'remove_white_logo' => 1])->assertSessionHasNoErrors();
+            $this->assertNull(WebsiteSetting::current()->white_logo_path);
             $this->assertNull(WebsiteSetting::current()->logo_path);
             $this->assertNull(WebsiteSetting::current()->favicon_path);
         } finally {
