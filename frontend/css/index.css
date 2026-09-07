@@ -370,6 +370,8 @@ header nav .container,
 }
 
 @media (max-width:767px) {
+    .sec-hero .hero-slider,
+    .sec-hero .swiper-slide {height:50vh;}
     .elite-site-header {--menu-height:82px;--menu-compact-height:64px;--menu-logo-size:62px;}
     .scrollDown .elite-site-header {--menu-height:var(--menu-compact-height);--menu-logo-size:48px;}
     .elite-nav-content {grid-template-columns:minmax(0, 1fr) 84px minmax(0, 1fr);}
