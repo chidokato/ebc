@@ -123,8 +123,8 @@ header nav .container,
 
 .sec-ballroom,
 .sec-elite-suite,
-.sec-flex-suite {background:#f7eadf;}
-.sec-ballroom {padding:64px 0 72px;}
+.sec-flex-suite {background:#F1E6DC;}
+.sec-ballroom {background:linear-gradient(to bottom, #F1E6DC 0%, #F1E6DC 66.67%, #CDAE86 100%);padding:64px 0 72px;}
 .sec-elite-suite,
 .sec-flex-suite {padding:0 0 72px;}
 .ballroom-heading {color:#693d18;margin:0 auto 38px;max-width:760px;}
@@ -224,7 +224,7 @@ header nav .container,
 .ballroom-booking {background:#c9a25f;border:1px solid #e8d2a3;box-shadow:inset 0 0 0 1px rgb(83 54 18 / 40%);color:#fff;font-size:15px;font-weight:700;padding:5px 14px;text-transform:uppercase;}
 .ballroom-booking:hover {background:#b78c45;}
 
-.sec-service-experience {background:#fff;padding:56px 0 64px;overflow:hidden;}
+.sec-service-experience {background:#F1E6DC;padding:56px 0 64px;overflow:hidden;}
 .service-experience-heading {color:#744720;margin:0 auto 22px;max-width:720px;}
 .service-experience-heading h2 {font-family:Georgia, serif;font-size:clamp(30px, 3.2vw, 48px);font-weight:400;letter-spacing:-.055em;line-height:1;margin-bottom:12px;text-transform:uppercase;}
 .service-experience-heading p {font-size:14px;line-height:1.5;margin:0;}
@@ -257,7 +257,7 @@ header nav .container,
 .event-card-content p {margin:0;}
 .event-card-image--empty {background:linear-gradient(135deg, #bea16d 0%, #76542d 100%);}
 
-.sec-services-amenities {background:#fbf6ef;padding:58px 0 66px;}
+.sec-services-amenities {background:linear-gradient(to bottom, #F1E6DC 0%, #CDAE86 100%);padding:58px 0 66px;}
 .sec-services-amenities > .container {max-width:1100px;}
 .sec-services-amenities h2 {color:#6b3f1b;font-family:Georgia, serif;font-size:clamp(30px, 3.6vw, 52px);font-weight:400;letter-spacing:-.045em;line-height:1;margin:0 0 26px;text-align:center;text-transform:uppercase;}
 .amenities-slider {padding:0 0 38px;}
