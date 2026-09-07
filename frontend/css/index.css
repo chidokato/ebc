@@ -1,6 +1,14 @@
 :root {--ebc-container-width:1450px;}
 
 html {scroll-behavior:smooth;}
+.scroll-reveal {opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);}
+.scroll-reveal-left {transform:translateX(-40px);}
+.scroll-reveal-right {transform:translateX(40px);}
+body {overflow-x:clip;}
+.scroll-reveal.scroll-reveal-visible {opacity:1;transform:none;}
+@media print {
+    .scroll-reveal {opacity:1;transform:none;}
+}
 
 .admin-shortcut {position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:1000;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #d0a968;border-radius:8px;background:#4b321c;color:#fff;font-size:14px;font-weight:700;text-decoration:none;box-shadow:0 4px 14px rgb(0 0 0 / 18%);transition:background-color .2s ease;}
 .admin-shortcut:hover {background:#744720;color:#fff;text-decoration:none;}
@@ -105,8 +113,12 @@ header nav .container,
 .ebc-event-rich-content p:nth-child(2) {font-size:.72em;letter-spacing:-.055em;}
 .ebc-event-rich-content p:nth-child(3) {display:block;}
 .ebc-benefit-slider {position:relative;}
-.ebc-benefit-slider .swiper {padding:50px 0 20px;margin:0;}
-.ebc-benefit-card {background:rgb(255 255 255 / 96%);border-radius:10px;box-shadow:0 8px 14px rgb(51 33 12 / 24%);color:#4a321d;display:flex;flex-direction:column;height:244px;padding:18px 16px 16px;text-align:center;}
+.ebc-benefit-slider .swiper {padding:50px 0 30px;margin:0;}
+.ebc-benefit-card {background:rgb(255 255 255 / 96%);border-radius:10px;box-shadow:0 8px 14px rgb(51 33 12 / 24%);color:#4a321d;display:flex;flex-direction:column;height:244px;padding:18px 16px 16px;text-align:center;transform:scale(1);transition:transform .5s cubic-bezier(.45,0,.55,1);}
+.ebc-benefit-slider .swiper-slide:hover {z-index:2;}
+.ebc-benefit-card:hover {transform:scale(1.05);}
+.ebc-benefit-slider .swiper-slide:first-child .ebc-benefit-card {transform-origin:left center;}
+.ebc-benefit-slider .swiper-slide:last-child .ebc-benefit-card {transform-origin:right center;}
 .ebc-benefit-card > i {color:#ad7e3f;font-size:31px;line-height:1;margin-bottom:14px;}
 .ebc-benefit-icon {height:31px;margin:0 auto 14px;max-width:56px;object-fit:contain;}
 .ebc-benefit-card h2 {font-size:1rem;font-weight:700;line-height:1.25;margin:0;text-transform:uppercase;}
@@ -145,7 +157,9 @@ header nav .container,
 .venue-slider .swiper-wrapper,
 .venue-slider .swiper-slide,
 .venue-media {height:100%;min-height:0;}
-.venue-media {background-color:#f7eadf;background-position:center;background-repeat:no-repeat;background-size:cover;display:block;}
+.venue-media {background-color:#f7eadf;background-position:center;background-repeat:no-repeat;background-size:cover;display:block;transform:scale(1);transform-origin:center;transition:transform .5s cubic-bezier(.45,0,.55,1);}
+.venue-slider .swiper-slide {overflow:hidden;}
+.venue-slider:hover .venue-media:not(.venue-media--empty) {transform:scale(1.08);}
 .venue-media--empty {background:linear-gradient(135deg, #fffaf3 0%, #ead6bd 48%, #9a7046 100%);}
 .venue-slider .swiper-button-next,
 .venue-slider .swiper-button-prev {align-items:center;background:rgb(68 43 17 / 68%);border:1px solid rgb(255 255 255 / 72%);border-radius:50%;bottom:16px;color:#fff;display:flex;height:30px;justify-content:center;top:auto;width:30px;}
@@ -267,7 +281,7 @@ header nav .container,
 .amenity-card::before {display:none;}
 .amenity-card-content {    background: linear-gradient(to top, rgb(107 63 27) 0%, rgb(107 63 27 / 48%) 58%, rgb(39 25 11 / 0%) 100%);bottom:0;color:#fff;left:0;padding:28px 28px 24px;position:absolute;right:0;text-align:center;z-index:1;}
 .amenity-card h3 {font-size:19px;font-weight:700;line-height:1.08;margin:0 0 8px;text-transform:uppercase;}
-.amenity-sub-title {font-size:12px;line-height:1.3;margin:0px 0 12px;}
+.amenity-sub-title {font-size:14px;line-height:1.3;margin:0px 0 12px;}
 .amenity-hours {display:inline-flex;font-size:12px;gap:6px;justify-content:center;margin-bottom:12px;}
 .amenity-card p {font-size:12px;line-height:1.4;margin:0;text-align:left;}
 .amenity-card--empty {background:linear-gradient(135deg, #8d6738 0%, #3e2813 100%);}

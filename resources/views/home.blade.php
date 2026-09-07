@@ -284,6 +284,7 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/swiper-bundle.min.js"></script>
 <script src="js/index.js?v={{ filemtime(base_path('frontend/js/index.js')) }}"></script>
+<script src="js/scroll-reveal.js?v={{ filemtime(base_path('frontend/js/scroll-reveal.js')) }}"></script>
 <script>
     // Keep the existing landing markup intact while applying the active locale's copy.
     (() => {
