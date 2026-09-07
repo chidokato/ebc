@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    bindScrollTrigger('.hero-consult-button, .ballroom-booking, .elite-club-cta', '#consultation');
+    bindScrollTrigger('.hero-consult-button, .elite-club-cta', '#consultation');
 
     createSwiper('.hero-slider .swiper', {
         spaceBetween: 0,

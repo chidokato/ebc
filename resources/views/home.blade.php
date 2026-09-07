@@ -133,6 +133,7 @@
 							<h3 class="font-wasted-vindey">{{ $venue->title }}</h3>
 							<div class="venue-content">{!! $venue->content !!}</div>
 							@include('partials.section-quick-items', ['quickSection' => $venue])
+							<a class="ballroom-booking d-inline-block text-decoration-none mt-3" href="{{ $venue->link_url ?: route('home', ['locale' => $locale]) . '#consultation' }}">{{ $venue->link_label ?: ($translations['Đặt lịch hẹn'] ?? 'Đặt lịch hẹn') }}</a>
 						</div>
 					</div>
 				</article>
