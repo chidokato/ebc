@@ -47,15 +47,18 @@
 		<div class="swiper">
 			<div class="swiper-wrapper">
 				@forelse ($heroSliders as $slider)
-					<div class="swiper-slide">
+					@php($hasHeroContent = filled($slider->title) || filled($slider->description) || filled($slider->button_label))
+					<div class="swiper-slide {{ $hasHeroContent ? 'hero-slide-with-content' : '' }}">
 						<span style="background-image:url('{{ asset($slider->image_path) }}')" class="w-100 thumb"></span>
+						@if($hasHeroContent)
 						<div class="hero-content">
 							<div class="hero-text">
-								<h1>{{ $slider->title }}</h1>
+								@if(filled($slider->title))<h1>{{ $slider->title }}</h1>@endif
 								@if ($slider->description)<p>{{ $slider->description }}</p>@endif
 								@if ($slider->button_label)<a class="hero-consult-button d-inline-block text-decoration-none" href="{{ $slider->button_url ?: '#consultation' }}">{{ $slider->button_label }}</a>@endif
 							</div>
 						</div>
+						@endif
 					</div>
 				@empty
 					
