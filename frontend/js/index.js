@@ -1,30 +1,66 @@
 document.addEventListener('DOMContentLoaded', function () {
     var body = document.body;
     var header = document.querySelector('.elite-site-header');
+    var scrollFrame = null;
+    var previousScrollBehavior = '';
+
+    function stopAnchorScroll() {
+        if (scrollFrame !== null) {
+            cancelAnimationFrame(scrollFrame);
+            scrollFrame = null;
+            document.documentElement.style.scrollBehavior = previousScrollBehavior;
+        }
+    }
+
+    window.addEventListener('wheel', stopAnchorScroll, {passive: true});
+    window.addEventListener('touchstart', stopAnchorScroll, {passive: true});
+    window.addEventListener('keydown', function (event) {
+        if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key)) {
+            stopAnchorScroll();
+        }
+    });
 
     function updateScrollState() {
         body.classList.toggle('scrollDown', window.scrollY > 12);
     }
 
     function scrollToSelector(selector) {
-        var target = document.querySelector(selector);
+        var target = document.getElementById(decodeURIComponent(selector.slice(1)));
 
         if (!target) {
             return;
         }
 
-        var offset = header ? header.offsetHeight : 0;
-        var targetTop = target.getBoundingClientRect().top + window.scrollY - offset;
+        stopAnchorScroll();
+        var offset = header ? parseFloat(getComputedStyle(header).getPropertyValue('--menu-compact-height')) || header.offsetHeight : 0;
+        var start = window.scrollY;
+        var targetTop = target.getBoundingClientRect().top + start - offset - 12;
+        var destination = Math.max(0, Math.min(targetTop, document.documentElement.scrollHeight - window.innerHeight));
+        var distance = destination - start;
+        var duration = Math.min(2200, Math.max(1400, Math.abs(distance) * .6));
+        var startedAt = performance.now();
+        previousScrollBehavior = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
 
-        window.scrollTo({
-            top: Math.max(targetTop, 0),
-            behavior: 'smooth',
-        });
+        function animateScroll(now) {
+            var progress = Math.min((now - startedAt) / duration, 1);
+            var eased = (1 - Math.cos(Math.PI * progress)) / 2;
+            window.scrollTo(0, start + distance * eased);
+            if (progress < 1) {
+                scrollFrame = requestAnimationFrame(animateScroll);
+            } else {
+                stopAnchorScroll();
+            }
+        }
+        scrollFrame = requestAnimationFrame(animateScroll);
     }
 
     function bindScrollTrigger(selector, targetSelector) {
         document.querySelectorAll(selector).forEach(function (element) {
             element.addEventListener('click', function (event) {
+                if (event.defaultPrevented) {
+                    return;
+                }
                 event.preventDefault();
                 scrollToSelector(targetSelector);
             });
@@ -50,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         anchor.addEventListener('click', function (event) {
-            if (!document.querySelector(href)) {
+            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !document.getElementById(decodeURIComponent(href.slice(1)))) {
                 return;
             }
 

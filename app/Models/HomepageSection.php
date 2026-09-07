@@ -9,9 +9,9 @@ class HomepageSection extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['locale', 'parent_id', 'translation_group', 'key', 'title', 'sub_title', 'content', 'image_path', 'icon_path', 'link_url', 'link_label', 'sort_order', 'is_active'];
+    protected $fillable = ['locale', 'parent_id', 'translation_group', 'key', 'title', 'sub_title', 'content', 'image_path', 'icon_path', 'link_url', 'link_label', 'sort_order', 'is_active', 'quick_items'];
 
-    protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer'];
+    protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer', 'quick_items' => 'array'];
 
     public function parent()
     {

@@ -24,6 +24,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', UserController::class)->except('show');
         Route::resource('menus', MenuController::class)->except('show');
         Route::resource('sliders', SliderController::class)->except('show');
+        Route::resource('news', \App\Http\Controllers\Admin\NewsArticleController::class)->except('show');
         Route::delete('homepage-sections/{homepageSection}/images/{image}', [HomepageSectionController::class, 'destroyImage'])->name('homepage-sections.images.destroy');
         Route::resource('homepage-sections', HomepageSectionController::class)->except('show');
     });
@@ -38,6 +39,7 @@ Route::get('/', function (Request $request) {
 Route::get('/{locale}', function (string $locale) {
     return view('home', [
         'locale' => $locale,
+        'newsArticles' => \App\Models\NewsArticle::where('locale', $locale)->published()->orderByDesc('published_at')->limit(9)->get(),
         'languages' => [
             'vi' => 'Tiếng Việt',
             'en' => 'English',
@@ -94,3 +96,6 @@ Route::get('/{locale}', function (string $locale) {
             ->first(),
     ]);
 })->whereIn('locale', SetLocale::SUPPORTED_LOCALES)->middleware(SetLocale::class)->name('home');
+
+Route::get('/{locale}/news', [\App\Http\Controllers\NewsController::class, 'index'])->whereIn('locale', SetLocale::SUPPORTED_LOCALES)->middleware(SetLocale::class)->name('news.index');
+Route::get('/{locale}/news/{news}', [\App\Http\Controllers\NewsController::class, 'show'])->whereIn('locale', SetLocale::SUPPORTED_LOCALES)->whereNumber('news')->middleware(SetLocale::class)->name('news.show');

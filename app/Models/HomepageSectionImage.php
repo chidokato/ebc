@@ -11,7 +11,7 @@ class HomepageSectionImage extends Model
 
     protected $fillable = ['homepage_section_id', 'path', 'sort_order'];
 
-    protected $casts = ['sort_order' => 'integer'];
+    protected $casts = ['sort_order' => 'integer', 'homepage_section_id' => 'integer'];
 
     public function section()
     {

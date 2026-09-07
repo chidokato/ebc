@@ -15,7 +15,7 @@
 <link href="css/swiper-bundle.min.css" rel="stylesheet">
 <link href="css/fonts.css" rel="stylesheet">
 <link href="css/common.css" rel="stylesheet">
-<link href="css/index.css" rel="stylesheet">
+<link href="css/index.css?v={{ filemtime(base_path('frontend/css/index.css')) }}" rel="stylesheet">
 
 <!------------------- FONT ------------------->
 </head>
@@ -75,7 +75,7 @@
 <section class="sec-ebc-benefits" id="about">
 	<div class="container ebc-benefits-frame" @if($aboutSection?->images->isNotEmpty() || $aboutSection?->image_path) style="--about-background:url('{{ asset($aboutSection->images->first()?->path ?: $aboutSection->image_path) }}')" @endif>
 		<div class="ebc-event-copy">
-			@if($aboutSection->icon_path)<img class="ebc-event-logo" src="{{ asset($aboutSection->icon_path) }}" alt="{{ $aboutSection->title }}">@endif
+			<img class="ebc-event-logo" src="{{ asset($aboutSection->icon_path ?: 'frontend/img/logo.png') }}" alt="Elite Business Center">
 			@if($aboutSection?->content)
 				<div class="ebc-event-rich-content">{!! $aboutSection->content !!}</div>
 			@endif
@@ -132,6 +132,7 @@
 						<div class="venue-info">
 							<h3 class="font-wasted-vindey">{{ $venue->title }}</h3>
 							<div class="venue-content">{!! $venue->content !!}</div>
+							@include('partials.section-quick-items', ['quickSection' => $venue])
 						</div>
 					</div>
 				</article>
@@ -225,35 +226,20 @@
 </section>
 @endif
 
-@if(false)
-<!------------------- LATEST NEWS ------------------->
+@if($newsArticles->isNotEmpty())
 <section class="sec-latest-news" id="news">
-	<div class="container">
-		<div class="latest-news-heading"><span>Latest news</span><h2>Tin Tức Mới Nhất</h2></div>
-		<div class="swiper latest-news-slider">
-			<div class="swiper-wrapper">
-				<div class="swiper-slide">
-					<article class="latest-news-card">
-				<a class="latest-news-image" href="#" style="background-image:url('images/ebc-event-hall.png');background-position:left center" aria-label="Xem tin Elite Business Center"></a>
-				<div class="latest-news-body"><time datetime="2026-08-28"><i class="icon-clock"></i> Thứ Hai 28.08.2026</time><h3>Elite Business Center ra mắt không gian sự kiện mới</h3><a class="latest-news-link" href="#" aria-label="Đọc thêm"><i class="icon-next-thin"></i></a></div>
-					</article>
-				</div>
-				<div class="swiper-slide">
-					<article class="latest-news-card">
-				<a class="latest-news-image" href="#" style="background-image:url('images/capital.jpg');background-position:center center" aria-label="Xem tin Capital Elite"></a>
-				<div class="latest-news-body"><time datetime="2026-08-28"><i class="icon-clock"></i> Thứ Hai 28.08.2026</time><h3>Trải nghiệm hội họp đẳng cấp tại Elite Club</h3><a class="latest-news-link" href="#" aria-label="Đọc thêm"><i class="icon-next-thin"></i></a></div>
-					</article>
-				</div>
-				<div class="swiper-slide">
-					<article class="latest-news-card">
-				<a class="latest-news-image" href="#" style="background-image:url('images/elite-club-banner.png');background-position:right center" aria-label="Xem tin dịch vụ"></a>
-				<div class="latest-news-body"><time datetime="2026-08-28"><i class="icon-clock"></i> Thứ Hai 28.08.2026</time><h3>Những đặc quyền dành riêng cho hội viên</h3><a class="latest-news-link" href="#" aria-label="Đọc thêm"><i class="icon-next-thin"></i></a></div>
-					</article>
-				</div>
-			</div>
-			<div class="swiper-pagination"></div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="latest-news-heading"><span>Latest news</span><h2 class="font-wasted-vindey">{{ ['vi' => 'Tin Tức Mới Nhất', 'en' => 'Latest News', 'zh' => '最新新闻', 'ko' => '최신 뉴스'][$locale] }}</h2></div>
+        <div class="swiper latest-news-slider"><div class="swiper-wrapper">
+        @foreach ($newsArticles as $newsArticle)
+            <div class="swiper-slide"><article class="latest-news-card">
+                <a class="latest-news-image" href="{{ route('news.show', ['locale' => $locale, 'news' => $newsArticle->id]) }}" style="background-image:url('{{ asset($newsArticle->image_path ?: 'frontend/images/ebc-event-hall.png') }}')" aria-label="{{ $newsArticle->title }}"></a>
+                <div class="latest-news-body"><time datetime="{{ $newsArticle->published_at->toDateString() }}"><i class="icon-clock"></i> {{ $newsArticle->published_at->format('d.m.Y') }}</time><h3>{{ $newsArticle->title }}</h3><a class="latest-news-link" href="{{ route('news.show', ['locale' => $locale, 'news' => $newsArticle->id]) }}" aria-label="{{ $newsArticle->title }}"><i class="icon-next-thin"></i></a></div>
+            </article></div>
+        @endforeach
+        </div><div class="swiper-pagination"></div></div>
+        <a href="{{ route('news.index', ['locale' => $locale]) }}">{{ ['vi' => 'Xem tất cả tin tức', 'en' => 'All news', 'zh' => '所有新闻', 'ko' => '모든 뉴스'][$locale] }}</a>
+    </div>
 </section>
 @endif
 
@@ -280,10 +266,14 @@
 </footer>
 <!------------------- END: FOOTER ------------------->
 
+@if(auth()->user()?->is_admin)
+<a class="admin-shortcut" href="{{ route('admin.dashboard') }}">Vào quản trị</a>
+@endif
+
 <!------------------- JS core------------------->
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/swiper-bundle.min.js"></script>
-<script src="js/index.js"></script>
+<script src="js/index.js?v={{ filemtime(base_path('frontend/js/index.js')) }}"></script>
 <script>
     // Keep the existing landing markup intact while applying the active locale's copy.
     (() => {

@@ -26,6 +26,7 @@
         <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}" href="{{ route('admin.menus.index') }}"><i class="ri-menu-line"></i><span>Menu đa ngôn ngữ</span></a></li>
         <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}" href="{{ route('admin.sliders.index') }}"><i class="ri-image-line"></i><span>Slider đa ngôn ngữ</span></a></li>
         <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.homepage-sections.*') ? 'active' : '' }}" href="{{ route('admin.homepage-sections.index') }}"><i class="ri-layout-masonry-line"></i><span>Trang chủ</span></a></li>
+        <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.news.*') ? 'active' : '' }}" href="{{ route('admin.news.index') }}"><i class="ri-newspaper-line"></i><span>Tin tức đa ngôn ngữ</span></a></li>
         <li class="nav-item"><a class="nav-link menu-link" href="{{ route('home', ['locale' => 'vi']) }}" target="_blank"><i class="ri-external-link-line"></i><span>Xem website</span></a></li>
     </ul></div></div></div><div class="vertical-overlay"></div>
     <div class="main-content"><div class="page-content"><div class="container-fluid">
