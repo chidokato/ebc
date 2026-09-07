@@ -190,7 +190,7 @@
 @if($eliteClubSection)
 <!------------------- ELITE CLUB FROM DATABASE ------------------->
 @php($eliteClubImage = $eliteClubSection->images->first()?->path ?: $eliteClubSection->image_path)
-<section class="sec-elite-club" @if($eliteClubImage) style="--elite-club-background:url('{{ asset($eliteClubImage) }}')" @endif>
+<section id="clbhoivien" class="sec-elite-club" @if($eliteClubImage) style="--elite-club-background:url('{{ asset($eliteClubImage) }}')" @endif>
 	<div class="container">
 		<div class="elite-club-content">
 			<h2 class="font-wasted-vindey">{{ $eliteClubSection->title }}</h2>
