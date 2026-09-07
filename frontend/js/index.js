@@ -68,11 +68,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function createSwiper(selector, options) {
-        var element = document.querySelector(selector);
+        var element = typeof selector === 'string' ? document.querySelector(selector) : selector;
 
-        if (element && !element.swiper && typeof Swiper !== 'undefined') {
-            new Swiper(element, options);
+        if (!element || element.swiper || typeof Swiper === 'undefined') return;
+        var slideCount = element.querySelectorAll('.swiper-wrapper > .swiper-slide').length;
+        if (!slideCount) return;
+        var instance;
+        var currentBreakpoint;
+        function refreshSlider() {
+            var breakpoint = Object.keys(options.breakpoints || {}).map(Number).sort(function (a, b) { return a - b; })
+                .filter(function (width) { return window.innerWidth >= width; }).pop();
+            var key = breakpoint === undefined ? 'base' : String(breakpoint);
+            if (instance && key === currentBreakpoint) return;
+            currentBreakpoint = key;
+            var activeIndex = instance ? instance.realIndex : (options.initialSlide || 0);
+            if (instance) instance.destroy(true, true);
+            var settings = Object.assign({}, options, (options.breakpoints || {})[breakpoint] || {});
+            delete settings.breakpoints;
+            var fits = slideCount <= Number(settings.slidesPerView || 1);
+            settings.loop = Boolean(options.loop) && !fits;
+            settings.autoplay = fits ? false : options.autoplay;
+            settings.allowTouchMove = !fits;
+            settings.grabCursor = Boolean(options.grabCursor) && !fits;
+            settings.watchOverflow = true;
+            settings.initialSlide = fits ? 0 : Math.min(activeIndex, slideCount - 1);
+            if (fits) settings.centeredSlides = false;
+            element.classList.toggle('slider-static', fits);
+            instance = new Swiper(element, settings);
         }
+        refreshSlider();
+        window.addEventListener('resize', refreshSlider, {passive: true});
     }
 
     updateScrollState();
@@ -176,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var slider = element.closest('.venue-slider');
         var slideCount = element.querySelectorAll('.swiper-slide').length;
 
-        new Swiper(element, {
+        createSwiper(element, {
             loop: slideCount > 1,
             autoplay: slideCount > 1 ? {delay: 4200, disableOnInteraction: false} : false,
             navigation: {

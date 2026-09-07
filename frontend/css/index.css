@@ -26,7 +26,9 @@ header nav .container,
 .scrollDown .elite-site-nav a:hover,
 .scrollDown .elite-language summary:hover {color:#916b3c;}
 .scrollDown .elite-site-nav .elite-nav-cta {color:#4b321c !important;}
-.scrollDown .elite-nav-logo img {filter:brightness(0) saturate(100%) invert(18%) sepia(32%) saturate(870%) hue-rotate(348deg) brightness(94%) contrast(91%);}
+.elite-nav-logo .elite-nav-logo-color {display:none;}
+.scrollDown .elite-nav-logo .elite-nav-logo-white {display:none;}
+.scrollDown .elite-nav-logo .elite-nav-logo-color {display:block;}
 .elite-site-header {--menu-height:115px;--menu-compact-height:84px;--menu-logo-size:90px;}
 .scrollDown .elite-site-header {--menu-height:var(--menu-compact-height);--menu-logo-size:64px;}
 .elite-site-nav {min-height:var(--menu-height);transition:min-height .25s ease;}
@@ -154,7 +156,7 @@ header nav .container,
 .venue-content {font-size:14px;line-height:1.5;}
 .venue-content p {margin:0 0 14px;}
 .venue-content > :last-child {margin-bottom:0;}
-.section-quick-items {display:flex;flex-wrap:wrap;justify-content:flex-start;gap:16px 20px;margin:24px 0 16px;}
+.section-quick-items {display:flex;flex-wrap:wrap;justify-content:flex-start;gap:16px 30px;margin:24px 0 16px;}
 .section-quick-item {display:flex;flex:0 1 64px;min-width:0;flex-direction:column;align-items:center;text-align:center;overflow-wrap:anywhere;}
 .section-quick-item img {height:32px;width:32px;object-fit:contain;margin-bottom:8px;}
 .section-quick-item span {font-size:11px;line-height:1.4;}
@@ -234,6 +236,12 @@ header nav .container,
 .event-slider .swiper-slide-prev {visibility:visible;transform:perspective(900px) rotateY(8deg) scale(.88);transform-origin:right center;opacity:.75;}
 .event-slider .swiper-slide-next {visibility:visible;transform:perspective(900px) rotateY(-8deg) scale(.88);transform-origin:left center;opacity:.75;}
 .event-slider .swiper-slide-active {visibility:visible;transform:perspective(900px) rotateY(0deg) scale(1);opacity:1;z-index:3;}
+.event-slider.slider-static .swiper-slide {visibility:visible;transform:none;opacity:1;}
+.slider-static .swiper-pagination,
+.slider-static .swiper-button-next,
+.slider-static .swiper-button-prev,
+.swiper-button-lock,
+.swiper-pagination-lock {display:none !important;}
 .event-slider .swiper-button-next,
 .event-slider .swiper-button-prev {align-items:center;background:transparent;border:0;color:#a78759;display:flex;height:52px;justify-content:center;top:50%;margin-top:-26px;width:32px;}
 .event-slider .swiper-button-next::after,
