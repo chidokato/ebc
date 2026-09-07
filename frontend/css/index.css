@@ -370,6 +370,18 @@ header nav .container,
 }
 
 @media (max-width:767px) {
+    header nav .container,
+    .sec-ebc-benefits > .container,
+    .ebc-benefits-frame > .container,
+    .sec-ballroom > .container,
+    .sec-elite-suite > .container,
+    .sec-flex-suite > .container,
+    .sec-service-experience > .container,
+    .sec-services-amenities > .container,
+    .sec-elite-club > .container,
+    .sec-consultation > .container,
+    .sec-latest-news > .container,
+    .elite-footer .container {width:100%;max-width:100%;padding-left:8px;padding-right:8px;}
     .sec-hero .hero-slider,
     .sec-hero .swiper-slide {height:50vh;}
     .elite-site-header {--menu-height:82px;--menu-compact-height:64px;--menu-logo-size:62px;}
@@ -391,18 +403,22 @@ header nav .container,
 
     .sec-ebc-benefits {padding:0 0 38px;}
     .ebc-benefits-frame {min-height:0;padding:30px 0 38px;}
-    .ebc-event-copy {min-height:230px;padding-left:5%;}
+    .ebc-event-copy {min-height:230px;padding-left:0;max-width:100%;}
     .ebc-event-logo {margin-bottom:6px;width:68px;}
     .ebc-event-copy h2 {font-size:10vw;}
 
     .sec-ballroom {padding:46px 0 54px;}
     .sec-elite-suite,
     .sec-flex-suite {padding-bottom:54px;}
-    .ballroom-heading {margin-bottom:26px;padding:0 10px;}
+    .ballroom-heading {margin-bottom:26px;padding:0;}
     .ballroom-layout,
     .suite-layout,
     .flex-suite-layout,
-    .venue-layout {padding:0 10px;}
+    .venue-layout {padding:0;}
+    .sec-ballroom > .container {width:100%;padding-left:8px;padding-right:8px;}
+    .sec-ballroom .venue-layout {padding:0;--bs-gutter-x:0;}
+    .sec-ballroom .venue-layout > div {padding-left:0;padding-right:0;}
+    .sec-ballroom .ballroom-heading {padding-left:0;padding-right:0;}
     .ballroom-slider .swiper,
     .ballroom-slider .swiper-slide,
     .ballroom-slider .thumb,
@@ -423,7 +439,7 @@ header nav .container,
     .suite-capacities {gap:12px;grid-template-columns:repeat(3, 1fr);}
 
     .sec-service-experience {padding:42px 0 50px;}
-    .event-slider {padding:25px 24px 35px;}
+    .event-slider {padding:25px 0 35px;}
     .event-slider .swiper-button-next,
     .event-slider .swiper-button-prev {display:flex;width:24px;}
     .event-slider .swiper-button-prev {left:0;}
@@ -439,16 +455,16 @@ header nav .container,
     .sec-elite-club > .container {min-height:410px;}
     .sec-elite-club {background-position:62% center;}
     .sec-elite-club::before {background:linear-gradient(90deg,rgb(35 21 7 / 94%),rgb(35 21 7 / 68%));}
-    .elite-club-content {max-width:330px;padding:64px 0 46px;}
+    .elite-club-content {max-width:100%;padding:64px 0 46px;}
 
-    .consultation-layout {gap:34px;grid-template-columns:1fr;min-height:0;padding:56px 12px;}
-    .consultation-intro {text-align:center;}
+    .consultation-layout {gap:34px;grid-template-columns:minmax(0,1fr);min-height:0;padding:56px 0;}
+    .consultation-intro {text-align:center;max-width:100%;}
     .consultation-mark {margin:20px auto 0;}
     .consultation-form {padding:22px 18px 18px;}
 
     .sec-latest-news {padding:46px 0 52px;}
     .latest-news-heading {align-items:flex-start;flex-direction:column;gap:8px;}
-    .latest-news-slider {margin:0 auto;max-width:420px;overflow:visible;padding-bottom:30px;}
+    .latest-news-slider {margin:0 auto;max-width:100%;overflow:hidden;padding-bottom:30px;}
 
     .elite-footer-main {gap:28px;grid-template-columns:1fr;padding:38px 0 26px;}
     .elite-footer-brand {justify-content:flex-start;text-align:left;}
