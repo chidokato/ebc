@@ -248,7 +248,6 @@
             </article></div>
         @endforeach
         </div><div class="swiper-pagination"></div></div>
-        <a href="{{ route('news.index', ['locale' => $locale]) }}">{{ ['vi' => 'Xem tất cả tin tức', 'en' => 'All news', 'zh' => '所有新闻', 'ko' => '모든 뉴스'][$locale] }}</a>
     </div>
 </section>
 @endif
