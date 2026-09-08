@@ -7,6 +7,11 @@ html {scroll-behavior:smooth;overflow-x:clip;}
 body {overflow-x:clip;}
 .swiper {min-width:0;max-width:100%;}
 .scroll-reveal.scroll-reveal-visible {opacity:1;transform:none;}
+/* Keep unrevealed mobile sections inside the viewport before they are scrolled into view. */
+@media (max-width:767px) {
+    .scroll-reveal-left,
+    .scroll-reveal-right {transform:translateY(24px);}
+}
 @media print {
     .scroll-reveal {opacity:1;transform:none;}
 }
