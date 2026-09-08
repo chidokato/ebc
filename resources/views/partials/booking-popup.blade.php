@@ -1,14 +1,13 @@
 <button class="booking-popup-launch" type="button" data-open-booking>Nhận ưu đãi 50%</button>
 <dialog class="booking-popup" id="booking-popup" aria-labelledby="booking-popup-title">
     <div class="booking-popup-layout">
-        {{-- Thay đường dẫn ảnh tại đây khi có ảnh chương trình chính thức. --}}
-        <img class="booking-popup-photo" src="{{ asset('frontend/img/nghethuat.jpg') }}" alt="Không gian biểu diễn nghệ thuật tại Elite Business Center">
+        <img class="booking-popup-photo" src="{{ asset('frontend/img/popup.jpg') }}" alt="Không gian tổ chức workshop tại Elite Business Center">
         <div class="booking-popup-card">
             <button class="booking-popup-close" type="button" aria-label="Đóng popup" data-close-booking autofocus>&times;</button>
             <h2 id="booking-popup-title"><em>Nhận</em> ƯU ĐÃI</h2>
             <div class="booking-popup-offer">
                 <div class="booking-popup-hours"><em>Giảm</em><strong>ÁP DỤNG TRONG<br>KHUNG GIỜ</strong><span>✦ 07:00 – 22:00</span><span>✦ 07:00 – 22:00</span></div>
-                <div class="booking-popup-discount">50<span>%</span></div>
+                <img class="booking-popup-discount" src="{{ asset('frontend/img/50.png') }}" alt="50%" width="435" height="257">
             </div>
             <p class="booking-popup-subtitle">HỘI TRƯỜNG SỰ KIỆN &amp; PHÒNG HỘI THẢO</p>
             <form id="booking-popup-form" action="{{ route('booking.store') }}" method="post">
