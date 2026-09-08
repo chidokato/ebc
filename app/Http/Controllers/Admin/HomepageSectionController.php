@@ -86,6 +86,9 @@ class HomepageSectionController extends Controller
             if ($locale !== $data['locale'] && ! $request->boolean('apply_icon_all', true)) {
                 $localized['icon_path'] = null;
             }
+            if ($locale !== $data['locale'] && ! $request->boolean('apply_quick_items_all', true)) {
+                $localized['quick_items'] = [];
+            }
             $localized['locale'] = $locale;
             $localized['translation_group'] = $translationGroup;
             $localized['parent_id'] = $parent
@@ -190,6 +193,7 @@ class HomepageSectionController extends Controller
             'icon_file' => ['nullable', 'file', 'mimes:png,webp,svg', 'max:20480'],
             'apply_images_all' => ['nullable', 'boolean'],
             'apply_icon_all' => ['nullable', 'boolean'],
+            'apply_quick_items_all' => ['nullable', 'boolean'],
             'link_url' => ['nullable', 'string', 'max:2048'],
             'link_label' => ['nullable', 'string', 'max:100'],
             'sort_order' => ['required', 'integer', 'min:0', 'max:9999'],
@@ -218,7 +222,7 @@ class HomepageSectionController extends Controller
     {
         unset($data['image_files'], $data['icon_file']);
         unset($data['quick_items_present']);
-        unset($data['apply_images_all'], $data['apply_icon_all']);
+        unset($data['apply_images_all'], $data['apply_icon_all'], $data['apply_quick_items_all']);
 
         if ($request->has('quick_items_present')) {
             $items = [];
@@ -248,7 +252,8 @@ class HomepageSectionController extends Controller
 
     private function applyAssetsToTranslations(HomepageSection $source, Request $request): void
     {
-        if (! $source->translation_group || (! $request->boolean('apply_images_all') && ! $request->boolean('apply_icon_all'))) {
+        $shareQuickItems = $request->has('quick_items_present') && $request->boolean('apply_quick_items_all');
+        if (! $source->translation_group || (! $request->boolean('apply_images_all') && ! $request->boolean('apply_icon_all') && ! $shareQuickItems)) {
             return;
         }
 
@@ -262,6 +267,9 @@ class HomepageSectionController extends Controller
             }
             if ($request->boolean('apply_icon_all')) {
                 $translation->icon_path = $source->icon_path;
+            }
+            if ($shareQuickItems) {
+                $translation->quick_items = $source->quick_items;
             }
             $translation->save();
         }

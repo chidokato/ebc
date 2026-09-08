@@ -13,6 +13,48 @@ class SectionQuickItemsTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_sharing_replaces_and_clears_only_matching_translations(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $original = [['name' => 'Area', 'sub' => '100', 'icon_path' => 'area.svg']];
+        foreach (['vi', 'en', 'zh', 'ko'] as $locale) {
+            HomepageSection::create(['locale' => $locale, 'translation_group' => 'shared', 'title' => $locale, 'quick_items' => $original]);
+        }
+        $source = HomepageSection::where('locale', 'en')->firstOrFail();
+        $unrelated = HomepageSection::create(['locale' => 'vi', 'translation_group' => 'other', 'title' => 'Other', 'quick_items' => $original]);
+        $this->get('/admin/homepage-sections/'.$source->id.'/edit')->assertOk()->assertSee('apply_quick_items_all');
+        $payload = ['title' => 'en', 'sort_order' => 0, 'quick_items_present' => 1, 'apply_quick_items_all' => 1,
+            'quick_items' => [['name' => 'Capacity', 'sub' => '300'], ['existing_index' => 0, 'name' => 'Area', 'sub' => '430']]];
+        $this->put('/admin/homepage-sections/'.$source->id, $payload)->assertSessionHasNoErrors();
+        foreach (HomepageSection::where('translation_group', 'shared')->get() as $translation) {
+            $this->assertSame($source->fresh()->quick_items, $translation->quick_items);
+            $this->assertSame('area.svg', $translation->quick_items[1]['icon_path']);
+            $this->assertSame($translation->locale, $translation->title);
+        }
+        $payload['apply_quick_items_all'] = 0;
+        unset($payload['quick_items']);
+        $this->put('/admin/homepage-sections/'.$source->id, $payload)->assertSessionHasNoErrors();
+        $this->assertSame([], $source->fresh()->quick_items);
+        $this->assertCount(2, HomepageSection::where('translation_group', 'shared')->where('locale', 'vi')->firstOrFail()->quick_items);
+        $payload['apply_quick_items_all'] = 1;
+        $this->put('/admin/homepage-sections/'.$source->id, $payload)->assertSessionHasNoErrors();
+        foreach (HomepageSection::where('translation_group', 'shared')->get() as $translation) {
+            $this->assertSame([], $translation->quick_items);
+        }
+        $this->assertSame($original, $unrelated->fresh()->quick_items);
+    }
+
+    public function test_create_with_quick_item_sharing_disabled_only_populates_selected_language(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $this->post('/admin/homepage-sections', ['locale' => 'vi', 'title' => 'Elite', 'sort_order' => 0,
+            'quick_items_present' => 1, 'apply_quick_items_all' => 0, 'quick_items' => [['name' => 'Area', 'sub' => '430']]])->assertSessionHasNoErrors();
+        $this->assertCount(1, HomepageSection::where('locale', 'vi')->firstOrFail()->quick_items);
+        foreach (HomepageSection::where('locale', '!=', 'vi')->get() as $translation) {
+            $this->assertSame([], $translation->quick_items);
+        }
+    }
+
     public function test_quick_items_save_render_edit_and_clear(): void
     {
         $this->actingAs(User::factory()->create(['is_admin' => true]));
