@@ -14,6 +14,7 @@ return [
     */
 
     'default' => env('MAIL_MAILER', 'smtp'),
+    'booking_to' => env('BOOKING_MAIL_TO'),
 
     /*
     |--------------------------------------------------------------------------

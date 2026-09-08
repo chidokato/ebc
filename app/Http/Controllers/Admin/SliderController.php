@@ -30,6 +30,9 @@ class SliderController extends Controller
     {
         $data = $this->validated($request);
         $data['image_path'] = $request->hasFile('image') ? $this->storeImage($request) : 'frontend/images/capital.jpg';
+        if ($request->hasFile('mobile_image')) {
+            $data['mobile_image_path'] = $this->storeImage($request, 'mobile_image');
+        }
         Slider::create($data);
 
         return redirect()->route('admin.sliders.index', ['locale' => $data['locale']])->with('success', 'Đã thêm slider.');
@@ -43,11 +46,20 @@ class SliderController extends Controller
     public function update(Request $request, Slider $slider)
     {
         $data = $this->validated($request);
-        if ($request->hasFile('image')) {
-            $this->deleteUploadedImage($slider->image_path);
-            $data['image_path'] = $this->storeImage($request);
+        $oldPaths = [];
+        foreach (['image' => 'image_path', 'mobile_image' => 'mobile_image_path'] as $input => $field) {
+            if ($request->hasFile($input)) {
+                $data[$field] = $this->storeImage($request, $input);
+                $oldPaths[] = $slider->$field;
+            } elseif ($input === 'mobile_image' && $request->boolean('remove_mobile_image')) {
+                $data[$field] = null;
+                $oldPaths[] = $slider->$field;
+            }
         }
         $slider->update($data);
+        foreach ($oldPaths as $path) {
+            $this->deleteUploadedImage($path);
+        }
 
         return redirect()->route('admin.sliders.index', ['locale' => $slider->locale])->with('success', 'Đã cập nhật slider.');
     }
@@ -56,6 +68,7 @@ class SliderController extends Controller
     {
         $locale = $slider->locale;
         $this->deleteUploadedImage($slider->image_path);
+        $this->deleteUploadedImage($slider->mobile_image_path);
         $slider->delete();
 
         return redirect()->route('admin.sliders.index', ['locale' => $locale])->with('success', 'Đã xóa slider.');
@@ -72,23 +85,26 @@ class SliderController extends Controller
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
             'is_active' => ['nullable', 'boolean'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:20480'],
+            'mobile_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:20480'],
+            'remove_mobile_image' => ['nullable', 'boolean'],
         ]);
 
         $data['title'] = $data['title'] ?? '';
         $data['sort_order'] = $data['sort_order'] ?? 0;
         $data['is_active'] = $request->boolean('is_active');
+        unset($data['image'], $data['mobile_image'], $data['remove_mobile_image']);
 
         return $data;
     }
 
-    private function storeImage(Request $request): string
+    private function storeImage(Request $request, string $input = 'image'): string
     {
-        return ImageResizer::store($request->file('image'), 'uploads/sliders');
+        return ImageResizer::store($request->file($input), 'uploads/sliders');
     }
 
-    private function deleteUploadedImage(string $path): void
+    private function deleteUploadedImage(?string $path): void
     {
-        if (Str::startsWith($path, 'uploads/sliders/')) {
+        if ($path && Str::startsWith($path, 'uploads/sliders/')) {
             File::delete(base_path($path));
         }
     }

@@ -9,7 +9,7 @@ class Slider extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['locale', 'title', 'description', 'image_path', 'button_label', 'button_url', 'sort_order', 'is_active'];
+    protected $fillable = ['locale', 'title', 'description', 'image_path', 'mobile_image_path', 'button_label', 'button_url', 'sort_order', 'is_active'];
 
     protected $casts = ['is_active' => 'boolean', 'sort_order' => 'integer'];
 }

@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function bindScrollTrigger(selector, targetSelector) {
         document.querySelectorAll(selector).forEach(function (element) {
             element.addEventListener('click', function (event) {
-                if (event.defaultPrevented) {
+                if (event.defaultPrevented || element.matches('[data-open-booking]')) {
                     return;
                 }
                 event.preventDefault();
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         anchor.addEventListener('click', function (event) {
-            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !document.getElementById(decodeURIComponent(href.slice(1)))) {
+            if (event.defaultPrevented || anchor.matches('[data-open-booking]') || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || !document.getElementById(decodeURIComponent(href.slice(1)))) {
                 return;
             }
 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    bindScrollTrigger('.hero-consult-button, .elite-club-cta', '#consultation');
+    bindScrollTrigger('.elite-club-cta', '#consultation');
 
     createSwiper('.hero-slider .swiper', {
         spaceBetween: 0,
