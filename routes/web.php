@@ -32,6 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', UserController::class)->except('show');
         Route::resource('menus', MenuController::class)->except('show');
         Route::resource('sliders', SliderController::class)->except('show');
+        Route::patch('news/{news}/status', [\App\Http\Controllers\Admin\NewsArticleController::class, 'updateStatus'])->name('news.status');
         Route::resource('news', \App\Http\Controllers\Admin\NewsArticleController::class)->except('show');
         Route::delete('homepage-sections/{homepageSection}/images/{image}', [HomepageSectionController::class, 'destroyImage'])->name('homepage-sections.images.destroy');
         Route::resource('homepage-sections', HomepageSectionController::class)->except('show');

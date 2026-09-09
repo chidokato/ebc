@@ -32,12 +32,16 @@
     </ul></div></div></div><div class="vertical-overlay"></div>
     <div class="main-content"><div class="page-content"><div class="container-fluid">
         <div class="row"><div class="col-12"><div class="page-title-box d-sm-flex align-items-center justify-content-between"><h4 class="mb-sm-0">@yield('page_title', 'Tổng quan')</h4></div></div></div>
-        @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
-        @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
         @yield('content')
     </div></div></div>
 </div>
+@include('admin.partials.notifications')
 <script src="{{ asset('admin-assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script>
+    document.querySelectorAll('.admin-notification').forEach(function (element) {
+        new bootstrap.Toast(element).show();
+    });
+</script>
 <script src="{{ asset('admin-assets/libs/simplebar/simplebar.min.js') }}"></script>
 <script src="{{ asset('admin-assets/libs/node-waves/waves.min.js') }}"></script>
 <script src="{{ asset('admin-assets/libs/feather-icons/feather.min.js') }}"></script>

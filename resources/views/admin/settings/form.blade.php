@@ -2,7 +2,6 @@
 @section('title', 'Cấu hình website')
 @section('page_title', 'Cấu hình website')
 @section('content')
-@if($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
 <form method="POST" enctype="multipart/form-data" action="{{ route('admin.settings.update') }}">
 @csrf @method('PUT')
 <div class="card"><div class="card-body">

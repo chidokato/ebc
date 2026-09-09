@@ -106,6 +106,36 @@ class NewsTest extends TestCase
         $this->get('/vi/news')->assertDontSee($article->title);
     }
 
+    public function test_list_status_switch_publishes_and_unpublishes_only_the_selected_translation(): void
+    {
+        $this->admin();
+        $this->post('/admin/news', $this->payload())->assertSessionHasNoErrors();
+        $source = NewsArticle::firstOrFail();
+        $this->post('/admin/news', $this->payload([
+            'locale' => 'en', 'translation_group' => $source->translation_group, 'status' => 'draft',
+        ]))->assertSessionHasNoErrors();
+        $english = NewsArticle::where('locale', 'en')->firstOrFail();
+        $url = '/admin/news/'.$english->id.'/status';
+        $this->get('/admin/news?locale=en')->assertOk()->assertSee('role="switch"', false);
+        $this->patch($url, ['is_published' => 1, 'page' => 2])->assertSessionHasNoErrors()
+            ->assertRedirect(route('admin.news.index', ['locale' => 'en', 'page' => 2]));
+        $publishedAt = $english->fresh()->published_at;
+        $this->assertNotNull($publishedAt);
+        $this->get('/en/news/'.$english->id)->assertOk();
+        $this->travel(1)->hours();
+        $this->patch($url, ['is_published' => 1])->assertSessionHasNoErrors();
+        $this->assertTrue($publishedAt->eq($english->fresh()->published_at));
+        $this->patch($url, ['is_published' => 0])->assertSessionHasNoErrors();
+        $this->assertNull($english->fresh()->published_at);
+        $this->get('/en/news/'.$english->id)->assertNotFound();
+        $this->assertNotNull($source->fresh()->published_at);
+        $this->assertSame($english->content, $english->fresh()->content);
+        $this->patch($url, ['is_published' => 'invalid'])->assertSessionHasErrors('is_published');
+        $this->actingAs(User::factory()->create(['is_admin' => false]));
+        $this->patch($url, ['is_published' => 1])->assertRedirect(route('admin.login'));
+        $this->assertNull($english->fresh()->published_at);
+    }
+
     public function test_rich_content_is_saved_safely_and_can_be_reopened(): void
     {
         $this->admin();

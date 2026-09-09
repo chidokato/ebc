@@ -2,7 +2,6 @@
 @section('title', 'Biên tập tin tức')
 @section('page_title', 'Biên tập tin tức — ' . $locales[$article->locale])
 @section('content')
-@if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
 @if ($article->translation_group)
 <div class="d-flex flex-wrap gap-2 mb-3">@foreach ($locales as $code => $label)
     <a class="btn {{ $code === $article->locale ? 'btn-primary' : 'btn-light' }}" href="{{ isset($translations[$code]) ? route('admin.news.edit', $translations[$code]) : route('admin.news.create', ['locale' => $code, 'group' => $article->translation_group]) }}">{{ $label }}{{ isset($translations[$code]) ? '' : ' + Thêm bản dịch' }}</a>

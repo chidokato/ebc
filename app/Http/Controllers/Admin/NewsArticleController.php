@@ -108,6 +108,19 @@ class NewsArticleController extends Controller
             : 'Đã lưu bài viết.');
     }
 
+    public function updateStatus(Request $request, NewsArticle $news)
+    {
+        $data = $request->validate([
+            'is_published' => ['required', 'boolean'],
+            'page' => ['nullable', 'integer', 'min:1'],
+        ]);
+        $news->published_at = $request->boolean('is_published') ? ($news->published_at ?: now()) : null;
+        $news->save();
+
+        return redirect()->route('admin.news.index', ['locale' => $news->locale, 'page' => $data['page'] ?? 1])
+            ->with('success', $news->published_at ? 'Đã đăng bài viết lên website.' : 'Đã chuyển bài viết về bản nháp.');
+    }
+
     public function destroy(NewsArticle $news)
     {
         $locale = $news->locale;
