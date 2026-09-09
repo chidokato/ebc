@@ -13,6 +13,18 @@ class WebsiteSettingsTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_booking_email_can_be_saved_validated_and_cleared(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $this->put('/admin/settings', ['title' => 'Website', 'booking_email' => 'bookings@example.com'])->assertSessionHasNoErrors();
+        $this->assertSame('bookings@example.com', WebsiteSetting::current()->booking_email);
+        $this->get('/admin/settings')->assertOk()->assertSee('Email nhận đăng ký')->assertSee('bookings@example.com');
+        $this->put('/admin/settings', ['title' => 'Website', 'booking_email' => 'invalid'])->assertSessionHasErrors('booking_email');
+        $this->assertSame('bookings@example.com', WebsiteSetting::current()->booking_email);
+        $this->put('/admin/settings', ['title' => 'Website', 'booking_email' => ''])->assertSessionHasNoErrors();
+        $this->assertNull(WebsiteSetting::current()->booking_email);
+    }
+
     public function test_settings_render_publicly_and_code_is_escaped_in_admin(): void
     {
         $this->actingAs(User::factory()->create(['is_admin' => true]));

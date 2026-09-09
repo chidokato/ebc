@@ -3,11 +3,24 @@
 namespace Tests\Feature;
 
 use App\Mail\BookingRequestMail;
+use App\Models\WebsiteSetting;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class BookingRequestTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public function test_admin_recipient_overrides_server_configuration(): void
+    {
+        Mail::fake();
+        config(['mail.booking_to' => 'fallback@example.com', 'mail.default' => 'smtp']);
+        WebsiteSetting::create(['id' => 1, 'title' => 'Website', 'booking_email' => 'admin@example.com']);
+        $this->postJson('/booking-request', $this->payload())->assertOk();
+        Mail::assertSent(BookingRequestMail::class, fn ($mail) => $mail->hasTo('admin@example.com') && ! $mail->hasTo('fallback@example.com'));
+    }
+
     private function payload(): array
     {
         return ['name' => 'Nguyễn An', 'phone' => '0986003663', 'guests' => 120, 'date' => now()->addDay()->format('Y-m-d')];

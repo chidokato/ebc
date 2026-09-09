@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/booking-request', [\App\Http\Controllers\BookingRequestController::class, 'store'])
     ->middleware('throttle:5,1')->name('booking.store');
 
+Route::post('/contact-request', [\App\Http\Controllers\ContactRequestController::class, 'store'])
+    ->middleware('throttle:5,1')->name('contact.store');
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('login', [AdminController::class, 'login'])->name('login');

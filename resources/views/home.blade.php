@@ -236,14 +236,16 @@
 				<h2 class="font-wasted-vindey">{{ $supportSection->title }}</h2>
 				<div class="consultation-description">{!! $supportSection->content !!}</div>
 			</div>
-			<form class="consultation-form">
+			<form class="consultation-form" action="{{ route('contact.store') }}" method="post">
+                @csrf
 				<h3>Thông Tin Liên Hệ</h3>
-				<label>Dịch vụ yêu cầu <sup>*</sup><select name="service" required><option value="">Chọn dịch vụ</option><option>Đặt lịch tham quan</option><option>Tổ chức sự kiện</option><option>Đăng ký hội viên</option></select></label>
-				<label>Họ và tên <sup>*</sup><input type="text" name="name" placeholder="Nhập họ và tên của bạn" required></label>
-				<label>Email <sup>*</sup><input type="email" name="email" placeholder="example@email.com" required></label>
-				<label>Số điện thoại <sup>*</sup><input type="tel" name="phone" placeholder="0123456789" required></label>
-				<label>Chi tiết yêu cầu <sup>*</sup><textarea name="message" placeholder="Mô tả chi tiết về sự kiện và yêu cầu của bạn..." required></textarea></label>
+				<label>Dịch vụ yêu cầu <sup>*</sup><select name="service" required><option value="">Chọn dịch vụ</option><option value="Đặt lịch tham quan">Đặt lịch tham quan</option><option value="Tổ chức sự kiện">Tổ chức sự kiện</option><option value="Đăng ký hội viên">Đăng ký hội viên</option></select></label>
+				<label>Họ và tên <sup>*</sup><input type="text" name="name" maxlength="100" placeholder="Nhập họ và tên của bạn" required></label>
+				<label>Email <sup>*</sup><input type="email" name="email" maxlength="255" placeholder="example@email.com" required></label>
+				<label>Số điện thoại <sup>*</sup><input type="tel" name="phone" minlength="8" maxlength="20" placeholder="0123456789" required></label>
+				<label>Chi tiết yêu cầu <sup>*</sup><textarea name="message" maxlength="5000" placeholder="Mô tả chi tiết về sự kiện và yêu cầu của bạn..." required></textarea></label>
 				<button type="submit">Liên hệ</button>
+                <p role="status" aria-live="polite" hidden></p>
 			</form>
 		</div>
 	</div>
@@ -296,6 +298,7 @@
 <!------------------- JS core------------------->
 @include('partials.booking-popup')
 <script src="js/booking-popup.js?v={{ filemtime(base_path('frontend/js/booking-popup.js')) }}" defer></script>
+<script src="js/contact-form.js?v={{ filemtime(base_path('frontend/js/contact-form.js')) }}" defer></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/swiper-bundle.min.js"></script>
 <script src="js/index.js?v={{ filemtime(base_path('frontend/js/index.js')) }}"></script>
