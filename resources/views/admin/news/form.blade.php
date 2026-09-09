@@ -16,7 +16,15 @@
     <div class="mb-3"><label for="title" class="form-label">Tiêu đề</label><input id="title" class="form-control" name="title" maxlength="255" required value="{{ old('title', $article->title) }}"></div>
     <div class="mb-3"><label for="excerpt" class="form-label">Tóm tắt</label><textarea id="excerpt" class="form-control" name="excerpt" rows="3" maxlength="2000">{{ old('excerpt', $article->excerpt) }}</textarea></div>
     <div class="mb-3 news-editor"><label for="content" class="form-label">Nội dung</label><textarea id="content" class="form-control" name="content" rows="15" maxlength="20000" required>{{ old('content', $article->content) }}</textarea><input type="hidden" id="content-is-html" name="content_is_html" value="{{ old('content_is_html', (int) $article->content_is_html) }}"><small class="text-muted">Định dạng nội dung bằng thanh công cụ. Tối đa 20.000 ký tự, bao gồm mã định dạng.</small><div id="content-error" class="text-danger mt-1" role="alert"></div></div>
-    <div class="mb-3"><label for="image_file" class="form-label">Ảnh đại diện (JPG, PNG, WebP; tối đa 10 MB)</label><input id="image_file" class="form-control" type="file" name="image_file" accept="image/jpeg,image/png,image/webp">@if ($article->image_path)<img class="mt-2 rounded" src="{{ asset($article->image_path) }}" alt="Ảnh đại diện" style="max-width:240px;max-height:160px">@endif</div>
+    <div class="mb-3">
+        <label for="image_file" class="form-label">Ảnh đại diện (JPG, PNG, WebP; tối đa 10 MB)</label>
+        <div class="d-flex flex-column flex-md-row gap-2">
+            <input id="image_file" class="form-control" type="file" name="image_file" accept="image/jpeg,image/png,image/webp" aria-describedby="image-all-languages-help">
+            <button class="btn btn-outline-primary flex-shrink-0" type="submit" name="apply_image_all_languages" value="1" aria-describedby="image-all-languages-help">Áp dụng cho tất cả ngôn ngữ</button>
+        </div>
+        <small id="image-all-languages-help" class="text-muted d-block mt-1">Lưu bài viết và dùng ảnh mới chọn (hoặc ảnh hiện tại) cho tất cả bản dịch đã có của bài này. Ảnh đại diện của các bản dịch sẽ được thay thế.</small>
+        @if ($article->image_path)<img class="mt-2 rounded" src="{{ asset($article->image_path) }}" alt="Ảnh đại diện" style="max-width:240px;max-height:160px">@endif
+    </div>
     <div class="mb-3"><label for="news-status" class="form-label">Trạng thái</label></div>
     <button class="btn btn-primary" type="submit">Lưu bài viết</button>
     <select id="news-status" class="btn btn-success" name="status"><option value="draft" @selected(old('status', $article->published_at ? 'published' : 'draft') === 'draft')>Bản nháp</option><option value="published" @selected(old('status', $article->published_at ? 'published' : 'draft') === 'published')>Đăng lên website</option></select>

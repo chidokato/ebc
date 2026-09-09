@@ -67,6 +67,7 @@ class NewsArticleController extends Controller
             'content' => ['required', 'string', 'max:20000'],
             'content_is_html' => ['nullable', 'boolean'],
             'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'apply_image_all_languages' => ['nullable', 'boolean'],
             'status' => ['required', Rule::in(['draft', 'published'])],
         ]);
         if ($article->exists) {
@@ -85,15 +86,26 @@ class NewsArticleController extends Controller
                 throw \Illuminate\Validation\ValidationException::withMessages(['content' => 'Vui lòng nhập nội dung bài viết.']);
             }
         }
+        $applyImageAllLanguages = $request->boolean('apply_image_all_languages');
+        if ($applyImageAllLanguages && ! $request->hasFile('image_file') && ! $article->image_path) {
+            throw \Illuminate\Validation\ValidationException::withMessages(['image_file' => 'Vui lòng chọn ảnh đại diện trước khi áp dụng cho tất cả ngôn ngữ.']);
+        }
         $imagePath = $request->hasFile('image_file') ? ImageResizer::store($request->file('image_file'), 'uploads/news') : $article->image_path;
-        DB::transaction(function () use ($article, $data, $group, $imagePath) {
+        DB::transaction(function () use ($article, $data, $group, $imagePath, $applyImageAllLanguages) {
             $article->fill(collect($data)->only(['locale', 'title', 'excerpt', 'content', 'content_is_html'])->all());
             $article->translation_group = $group;
             $article->image_path = $imagePath;
             $article->published_at = $data['status'] === 'published' ? ($article->published_at ?: now()) : null;
             $article->save();
+            if ($applyImageAllLanguages) {
+                NewsArticle::where('translation_group', $group)
+                    ->where('id', '!=', $article->id)
+                    ->update(['image_path' => $imagePath]);
+            }
         });
-        return redirect()->route('admin.news.edit', $article)->with('success', 'Đã lưu bài viết.');
+        return redirect()->route('admin.news.edit', $article)->with('success', $applyImageAllLanguages
+            ? 'Đã lưu bài viết và áp dụng ảnh đại diện cho tất cả bản ngôn ngữ hiện có của bài viết.'
+            : 'Đã lưu bài viết.');
     }
 
     public function destroy(NewsArticle $news)

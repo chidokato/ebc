@@ -99,7 +99,15 @@ Route::get('/{locale}', function (string $locale) {
         'supportSection' => HomepageSection::query()
             ->where('locale', $locale)
             ->where('is_active', true)
-            ->where(fn ($query) => $query->where('key', 'support')->orWhere('title', 'HỖ TRỢ TƯ VẤN'))
+            ->where(function ($query) {
+                $query->where('key', 'support')->orWhere('title', 'HỖ TRỢ TƯ VẤN')
+                    ->orWhereIn('translation_group', HomepageSection::query()
+                        ->select('translation_group')
+                        ->whereNotNull('translation_group')
+                        ->whereNull('parent_id')
+                        ->where(fn ($source) => $source->where('key', 'support')->orWhere('title', 'HỖ TRỢ TƯ VẤN')));
+            })
+            ->whereNull('parent_id')
             ->with('images')
             ->first(),
     ]);

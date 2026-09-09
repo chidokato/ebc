@@ -11,6 +11,26 @@ class SectionLanguageFlowTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_consultation_translations_render_without_a_key_or_vietnamese_title(): void
+    {
+        HomepageSection::create([
+            'locale' => 'vi', 'title' => 'HỖ TRỢ TƯ VẤN', 'key' => 'support',
+            'translation_group' => 'consultation', 'is_active' => true,
+        ]);
+        foreach (['zh' => '咨询支持', 'ko' => '상담 지원'] as $locale => $title) {
+            $translation = HomepageSection::create([
+                'locale' => $locale, 'title' => $title, 'key' => null,
+                'translation_group' => 'consultation', 'is_active' => true,
+            ]);
+            $this->get('/'.$locale)->assertOk()->assertSee('id="consultation"', false)
+                ->assertViewHas('supportSection', fn ($section) => $section->id === $translation->id)
+                ->assertSee($title);
+            $translation->update(['is_active' => false]);
+            $this->get('/'.$locale)->assertOk()->assertDontSee('id="consultation"', false);
+        }
+        $this->get('/en')->assertOk()->assertDontSee('id="consultation"', false);
+    }
+
     public function test_language_tabs_open_separate_records_and_saving_keeps_the_original_locale(): void
     {
         $this->actingAs(User::factory()->create(['is_admin' => true]));

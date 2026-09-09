@@ -56,6 +56,47 @@ class NewsTest extends TestCase
         Http::assertNothingSent();
     }
 
+    public function test_shared_image_only_updates_translations_of_the_same_article(): void
+    {
+        $this->admin();
+        $this->post('/admin/news', $this->payload())->assertSessionHasNoErrors();
+        $source = NewsArticle::firstOrFail();
+        $source->update(['image_path' => 'uploads/news/shared.jpg']);
+        foreach (['en', 'zh', 'ko'] as $locale) {
+            $this->post('/admin/news', $this->payload([
+                'locale' => $locale, 'translation_group' => $source->translation_group,
+                'title' => 'Manual '.$locale, 'status' => 'draft',
+            ]))->assertSessionHasNoErrors();
+        }
+        $translations = NewsArticle::where('id', '!=', $source->id)->get();
+        foreach ($translations as $translation) {
+            $translation->update(['image_path' => 'uploads/news/old.jpg']);
+        }
+        $this->post('/admin/news', $this->payload())->assertSessionHasNoErrors();
+        $unrelated = NewsArticle::latest('id')->firstOrFail();
+        $this->get('/admin/news/'.$source->id.'/edit')->assertOk()->assertSee('Áp dụng cho tất cả ngôn ngữ');
+        $this->put('/admin/news/'.$source->id, $this->payload())->assertSessionHasNoErrors();
+        $this->assertSame('uploads/news/old.jpg', $translations->first()->fresh()->image_path);
+        $this->put('/admin/news/'.$source->id, $this->payload(['apply_image_all_languages' => 1]))->assertSessionHasNoErrors();
+        foreach ($translations as $translation) {
+            $updated = $translation->fresh();
+            $this->assertSame('uploads/news/shared.jpg', $updated->image_path);
+            $this->assertSame($translation->title, $updated->title);
+            $this->assertSame($translation->content, $updated->content);
+            $this->assertNull($updated->published_at);
+        }
+        $this->assertNull($unrelated->fresh()->image_path);
+        $this->assertDatabaseCount('news_articles', 5);
+    }
+
+    public function test_applying_without_an_image_does_not_save_the_article(): void
+    {
+        $this->admin();
+        $this->post('/admin/news', $this->payload(['apply_image_all_languages' => 1]))
+            ->assertSessionHasErrors('image_file');
+        $this->assertDatabaseCount('news_articles', 0);
+    }
+
     public function test_drafts_are_hidden(): void
     {
         $this->admin();
