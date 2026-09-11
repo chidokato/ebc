@@ -28,16 +28,16 @@ class WebsiteSettingsTest extends TestCase
                 $this->assertNotContains($path, $paths);
                 $paths[] = $path;
                 $this->assertFileExists(base_path($path));
-                $this->get(route('home', ['locale' => 'vi']))->assertOk()
+                $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()
                     ->assertSee('<meta property="og:image" content="'.asset($path).'">', false);
-                $this->get(route('news.index', ['locale' => 'en']))->assertOk()
+                $this->get(\App\Support\LocalizedUrl::route('news.index', ['locale' => 'en']))->assertOk()
                     ->assertSee('<meta property="og:image" content="'.asset($path).'">', false);
                 $this->put(route('admin.settings.update'), ['title' => 'Updated'])->assertSessionHasNoErrors();
                 $this->assertSame($path, WebsiteSetting::current()->social_image_path);
             }
             $this->put(route('admin.settings.update'), ['title' => 'EBC', 'remove_social_image' => 1])->assertSessionHasNoErrors();
             $this->assertNull(WebsiteSetting::current()->social_image_path);
-            $this->get(route('home', ['locale' => 'vi']))->assertOk()
+            $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()
                 ->assertSee('<meta property="og:image" content="'.$defaultUrl.'">', false);
         } finally {
             foreach ($paths as $path) File::delete(base_path($path));
@@ -74,14 +74,14 @@ class WebsiteSettingsTest extends TestCase
             'head_code' => '<script data-test="head">window.siteTest=1;</script>', 'footer_code' => '<div id="custom-footer">Footer widget</div>'];
         $this->put('/admin/settings', $payload)->assertSessionHasNoErrors()->assertRedirect();
         $this->assertDatabaseCount('website_settings', 1);
-        $this->get('/vi')->assertOk()->assertSee('<title>Event Venue</title>', false)->assertSee($payload['head_code'], false)->assertSee($payload['footer_code'], false)->assertSee('Venue description');
+        $this->get('/')->assertOk()->assertSee('<title>Event Venue</title>', false)->assertSee($payload['head_code'], false)->assertSee($payload['footer_code'], false)->assertSee('Venue description');
         $this->get('/en/news')->assertOk()->assertSee('My Website')->assertSee($payload['head_code'], false);
         $this->get('/admin/settings')->assertOk()->assertDontSee($payload['head_code'], false)->assertSee(e($payload['head_code']), false);
         $payload['head_code'] = '';
         $payload['footer_code'] = '';
         $this->put('/admin/settings', $payload)->assertSessionHasNoErrors();
         $this->assertDatabaseCount('website_settings', 1);
-        $this->get('/vi')->assertDontSee('window.siteTest=1;', false);
+        $this->get('/')->assertDontSee('window.siteTest=1;', false);
     }
 
     public function test_uploads_are_saved_preserved_and_can_revert_to_defaults(): void
@@ -94,7 +94,7 @@ class WebsiteSettingsTest extends TestCase
             $paths = [$settings->logo_path, $settings->favicon_path, $settings->white_logo_path];
             foreach ($paths as $path) {
                 $this->assertFileExists(base_path($path));
-                $this->get('/vi')->assertSee(asset($path), false);
+                $this->get('/')->assertSee(asset($path), false);
             }
             $this->put('/admin/settings', ['title' => 'Brand updated'])->assertSessionHasNoErrors();
             $this->assertSame($paths[0], WebsiteSetting::current()->logo_path);

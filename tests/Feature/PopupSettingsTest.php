@@ -26,19 +26,19 @@ class PopupSettingsTest extends TestCase
     {
         $this->actingAs(User::factory()->create(['is_admin' => true]));
         $this->get(route('admin.popup-settings.edit'))->assertOk()->assertSee('Cấu hình popup');
-        $this->get(route('home', ['locale' => 'vi']))->assertOk()->assertSee('id="booking-popup"', false);
+        $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()->assertSee('id="booking-popup"', false);
         Slider::create(['locale' => 'vi', 'title' => 'Slider', 'image_path' => 'frontend/img/popup.jpg', 'button_label' => 'Đăng ký', 'is_active' => true, 'sort_order' => 0]);
         $this->put(route('admin.popup-settings.update'), $this->payload())->assertSessionHasNoErrors()->assertRedirect(route('admin.popup-settings.edit'));
         foreach (['vi', 'en', 'zh', 'ko'] as $locale) {
-            $this->get(route('home', ['locale' => $locale]))->assertOk()
+            $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => $locale]))->assertOk()
                 ->assertSee('Ưu đãi mới')->assertSee('Nội dung mới')->assertSee('Giảm 30%')->assertSee('Xem ưu đãi')->assertSee('Gửi đăng ký');
         }
         $this->put(route('admin.popup-settings.update'), $this->payload(['is_enabled' => 0]))->assertSessionHasNoErrors();
         $this->assertFalse(PopupSetting::current()->is_enabled);
-        $this->get(route('home', ['locale' => 'vi']))->assertOk()->assertDontSee('id="booking-popup"', false)
+        $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()->assertDontSee('id="booking-popup"', false)
             ->assertDontSee('data-open-booking', false)->assertDontSee('class="booking-popup-launch"', false)->assertSee('data-consultation', false);
         $this->put(route('admin.popup-settings.update'), $this->payload())->assertSessionHasNoErrors();
-        $this->get(route('home', ['locale' => 'vi']))->assertOk()->assertSee('id="booking-popup"', false)->assertSee('data-open-booking', false);
+        $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()->assertSee('id="booking-popup"', false)->assertSee('data-open-booking', false);
         $this->assertDatabaseCount('popup_settings', 1);
     }
 
@@ -58,7 +58,7 @@ class PopupSettingsTest extends TestCase
                     $this->assertNotContains($path, $paths);
                     $paths[] = $path;
                     $this->assertFileExists(base_path($path));
-                    $this->get(route('home', ['locale' => 'vi']))->assertOk()->assertSee(asset($path), false);
+                    $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()->assertSee(asset($path), false);
                     $this->get(route('admin.popup-settings.edit'))->assertOk()->assertSee(asset($path), false);
                 }
                 $this->put(route('admin.popup-settings.update'), $this->payload())->assertSessionHasNoErrors();
@@ -68,7 +68,7 @@ class PopupSettingsTest extends TestCase
             $this->put(route('admin.popup-settings.update'), $this->payload(['remove_image' => 1, 'remove_offer_image' => 1]))->assertSessionHasNoErrors();
             $this->assertNull(PopupSetting::current()->image_path);
             $this->assertNull(PopupSetting::current()->offer_image_path);
-            $this->get(route('home', ['locale' => 'vi']))->assertOk()->assertSee(asset('frontend/img/popup.jpg'), false)->assertSee(asset('frontend/img/50.png'), false);
+            $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()->assertSee(asset('frontend/img/popup.jpg'), false)->assertSee(asset('frontend/img/50.png'), false);
         } finally {
             foreach ($paths as $path) File::delete(base_path($path));
         }
@@ -84,7 +84,7 @@ class PopupSettingsTest extends TestCase
         $this->assertDatabaseCount('popup_settings', 0);
         $script = '<script>alert("popup")</script>';
         $this->put(route('admin.popup-settings.update'), $this->payload(['title' => $script, 'content' => $script, 'offer_content' => $script]))->assertSessionHasNoErrors();
-        $this->get(route('home', ['locale' => 'vi']))->assertOk()->assertDontSee($script, false)->assertSee(e($script), false);
+        $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => 'vi']))->assertOk()->assertDontSee($script, false)->assertSee(e($script), false);
     }
 
     public function test_only_admins_can_change_popup(): void

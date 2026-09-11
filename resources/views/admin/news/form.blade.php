@@ -28,7 +28,7 @@
     <button class="btn btn-primary" type="submit">Lưu bài viết</button>
     <select id="news-status" class="btn btn-success" name="status"><option value="draft" @selected(old('status', $article->published_at ? 'published' : 'draft') === 'draft')>Bản nháp</option><option value="published" @selected(old('status', $article->published_at ? 'published' : 'draft') === 'published')>Đăng lên website</option></select>
     <a class="btn btn-light" href="{{ route('admin.news.index', ['locale' => $article->locale]) }}">Quay lại</a>
-    @if ($article->published_at)<a class="btn btn-outline-primary" href="{{ route('news.show', ['locale' => $article->locale, 'news' => $article->id]) }}" target="_blank">Xem bài đã đăng</a>@endif
+    @if ($article->published_at)<a class="btn btn-outline-primary" href="{{ \App\Support\LocalizedUrl::route('news.show', ['locale' => $article->locale, 'news' => $article->id]) }}" target="_blank">Xem bài đã đăng</a>@endif
 </div></div></form>
 @endsection
 

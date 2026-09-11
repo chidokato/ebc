@@ -66,7 +66,7 @@ class SectionQuickItemsTest extends TestCase
         $this->assertCount(2, $section->quick_items);
         $this->assertSame('430m²', $section->quick_items[0]['sub']);
         $this->get('/admin/homepage-sections/'.$section->id.'/edit')->assertOk()->assertSee('430m²');
-        $this->get('/vi')->assertOk()->assertSee('430m²')->assertSee('Capacity');
+        $this->get('/')->assertOk()->assertSee('430m²')->assertSee('Capacity');
         $payload['quick_items'] = [['existing_index' => 1, 'name' => 'Capacity', 'sub' => '500']];
         $this->put('/admin/homepage-sections/'.$section->id, $payload)->assertSessionHasNoErrors();
         $this->assertSame('500', $section->fresh()->quick_items[0]['sub']);

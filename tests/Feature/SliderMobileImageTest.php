@@ -24,7 +24,7 @@ class SliderMobileImageTest extends TestCase
             $paths[] = $pc = $slider->image_path;
             $paths[] = $mobile = $slider->mobile_image_path;
             $this->assertFileExists(base_path($mobile));
-            $this->get('/vi')->assertOk()->assertSee('media="(max-width: 767px)"', false)->assertSee($mobile)->assertSee($pc);
+            $this->get('/')->assertOk()->assertSee('media="(max-width: 767px)"', false)->assertSee($mobile)->assertSee($pc);
             $this->get('/admin/sliders/'.$slider->id.'/edit')->assertOk()->assertSee('Ảnh mobile');
             $this->get('/admin/sliders')->assertOk()->assertSee($mobile);
             $this->put('/admin/sliders/'.$slider->id, $payload)->assertSessionHasNoErrors();
@@ -37,7 +37,7 @@ class SliderMobileImageTest extends TestCase
             $this->put('/admin/sliders/'.$slider->id, $payload + ['remove_mobile_image' => 1])->assertSessionHasNoErrors();
             $this->assertNull($slider->fresh()->mobile_image_path);
             $this->assertFileDoesNotExist(base_path($replacement));
-            $this->get('/vi')->assertOk()->assertDontSee('<source media="(max-width: 767px)"', false)->assertSee($pc);
+            $this->get('/')->assertOk()->assertDontSee('<source media="(max-width: 767px)"', false)->assertSee($pc);
             $this->delete('/admin/sliders/'.$slider->id)->assertRedirect();
             $this->assertFileDoesNotExist(base_path($pc));
         } finally {

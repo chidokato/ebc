@@ -41,13 +41,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-Route::get('/', function (Request $request) {
-    $preferredLocale = strtolower(substr($request->getPreferredLanguage(SetLocale::SUPPORTED_LOCALES) ?: 'vi', 0, 2));
-
-    return redirect()->route('home', ['locale' => $preferredLocale]);
-});
-
-Route::get('/{locale}', function (string $locale) {
+$homePage = function (string $locale) {
     return view('home', [
         'locale' => $locale,
         'newsArticles' => \App\Models\NewsArticle::where('locale', $locale)->published()->orderByDesc('published_at')->limit(9)->get(),
@@ -114,7 +108,19 @@ Route::get('/{locale}', function (string $locale) {
             ->with('images')
             ->first(),
     ]);
-})->whereIn('locale', SetLocale::SUPPORTED_LOCALES)->middleware(SetLocale::class)->name('home');
+};
 
-Route::get('/{locale}/news', [\App\Http\Controllers\NewsController::class, 'index'])->whereIn('locale', SetLocale::SUPPORTED_LOCALES)->middleware(SetLocale::class)->name('news.index');
-Route::get('/{locale}/news/{news}', [\App\Http\Controllers\NewsController::class, 'show'])->whereIn('locale', SetLocale::SUPPORTED_LOCALES)->whereNumber('news')->middleware(SetLocale::class)->name('news.show');
+Route::get('/', $homePage)->defaults('locale', 'vi')->middleware(SetLocale::class)->name('home.vi');
+Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->defaults('locale', 'vi')->middleware(SetLocale::class)->name('news.index.vi');
+Route::get('/news/{news}', [\App\Http\Controllers\NewsController::class, 'show'])->defaults('locale', 'vi')->whereNumber('news')->middleware(SetLocale::class)->name('news.show.vi');
+
+Route::get('/vi/{path?}', function (Request $request, ?string $path = null) {
+    $destination = url($path ?: '/');
+    if ($request->getQueryString()) $destination .= '?'.$request->getQueryString();
+    return redirect()->to($destination, 301);
+})->where('path', 'news(?:/[0-9]+)?');
+
+Route::get('/{locale}', $homePage)->whereIn('locale', ['en', 'zh', 'ko'])->middleware(SetLocale::class)->name('home');
+
+Route::get('/{locale}/news', [\App\Http\Controllers\NewsController::class, 'index'])->whereIn('locale', ['en', 'zh', 'ko'])->middleware(SetLocale::class)->name('news.index');
+Route::get('/{locale}/news/{news}', [\App\Http\Controllers\NewsController::class, 'show'])->whereIn('locale', ['en', 'zh', 'ko'])->whereNumber('news')->middleware(SetLocale::class)->name('news.show');

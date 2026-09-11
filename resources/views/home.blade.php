@@ -29,17 +29,17 @@
 	<nav class="elite-site-nav" aria-label="Điều hướng chính">
 		<div class="container elite-nav-content">
 			<div class="elite-nav-left">
-				<details class="elite-language"><summary><svg class="elite-language-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.2 3.3 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.3-5.2-3.3-8.5S9.8 5.9 12 3.5Z"></path></svg>{{ $languages[$locale] }}</summary>@foreach ($languages as $code => $label) @if ($code !== $locale)<a href="{{ route('home', ['locale' => $code]) }}">{{ $label }}</a>@endif @endforeach</details>
+				<details class="elite-language"><summary><svg class="elite-language-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.2 3.3 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.3-5.2-3.3-8.5S9.8 5.9 12 3.5Z"></path></svg>{{ $languages[$locale] }}</summary>@foreach ($languages as $code => $label) @if ($code !== $locale)<a href="{{ \App\Support\LocalizedUrl::route('home', ['locale' => $code]) }}">{{ $label }}</a>@endif @endforeach</details>
 				@foreach ($headerMenus->take(2) as $menu)<a href="{{ $menu->url }}">{{ $menu->label }}</a>@endforeach
 			</div>
-			<a class="elite-nav-logo" href="{{ route('home', ['locale' => $locale]) }}" aria-label="{{ $websiteSettings->title }}">
+			<a class="elite-nav-logo" href="{{ \App\Support\LocalizedUrl::route('home', ['locale' => $locale]) }}" aria-label="{{ $websiteSettings->title }}">
 				<img class="elite-nav-logo-white" src="{{ asset($websiteSettings->white_logo_path ?: 'frontend/img/logo-trang.png') }}" alt="{{ $websiteSettings->title }}">
 				<img class="elite-nav-logo-color" src="{{ asset($websiteSettings->logo_path ?: 'frontend/img/logo.png') }}" alt="{{ $websiteSettings->title }}">
 			</a>
 			<div class="elite-nav-right">
 				@foreach ($headerMenus->slice(2) as $menu)
 					@if($loop->last)
-						<a class="elite-nav-cta" href="{{ route('home', ['locale' => $locale]) }}#consultation">{{ $menu->label }}</a>
+						<a class="elite-nav-cta" href="{{ \App\Support\LocalizedUrl::route('home', ['locale' => $locale]) }}#consultation">{{ $menu->label }}</a>
 					@else
 						<a href="{{ $menu->url }}">{{ $menu->label }}</a>
 					@endif
@@ -259,8 +259,8 @@
         <div class="swiper latest-news-slider"><div class="swiper-wrapper">
         @foreach ($newsArticles as $newsArticle)
             <div class="swiper-slide"><article class="latest-news-card">
-                <a class="latest-news-image" href="{{ route('news.show', ['locale' => $locale, 'news' => $newsArticle->id]) }}" style="background-image:url('{{ asset($newsArticle->image_path ?: 'frontend/images/ebc-event-hall.png') }}')" aria-label="{{ $newsArticle->title }}"></a>
-                <div class="latest-news-body"><time datetime="{{ $newsArticle->published_at->toDateString() }}"><i class="icon-clock"></i> {{ $newsArticle->published_at->format('d.m.Y') }}</time><h3>{{ $newsArticle->title }}</h3><a class="latest-news-link" href="{{ route('news.show', ['locale' => $locale, 'news' => $newsArticle->id]) }}" aria-label="{{ $newsArticle->title }}"><i class="icon-next-thin"></i></a></div>
+                <a class="latest-news-image" href="{{ \App\Support\LocalizedUrl::route('news.show', ['locale' => $locale, 'news' => $newsArticle->id]) }}" style="background-image:url('{{ asset($newsArticle->image_path ?: 'frontend/images/ebc-event-hall.png') }}')" aria-label="{{ $newsArticle->title }}"></a>
+                <div class="latest-news-body"><time datetime="{{ $newsArticle->published_at->toDateString() }}"><i class="icon-clock"></i> {{ $newsArticle->published_at->format('d.m.Y') }}</time><h3>{{ $newsArticle->title }}</h3><a class="latest-news-link" href="{{ \App\Support\LocalizedUrl::route('news.show', ['locale' => $locale, 'news' => $newsArticle->id]) }}" aria-label="{{ $newsArticle->title }}"><i class="icon-next-thin"></i></a></div>
             </article></div>
         @endforeach
         </div><div class="swiper-pagination"></div></div>

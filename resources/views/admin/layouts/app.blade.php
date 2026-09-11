@@ -29,7 +29,7 @@
         <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.news.*') ? 'active' : '' }}" href="{{ route('admin.news.index') }}"><i class="ri-newspaper-line"></i><span>Tin tức đa ngôn ngữ</span></a></li>
         <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}"><i class="ri-settings-3-line"></i><span>Cấu hình website</span></a></li>
         <li class="nav-item"><a class="nav-link menu-link {{ request()->routeIs('admin.popup-settings.*') ? 'active' : '' }}" href="{{ route('admin.popup-settings.edit') }}"><i class="ri-window-line"></i><span>Cấu hình popup</span></a></li>
-        <li class="nav-item"><a class="nav-link menu-link" href="{{ route('home', ['locale' => 'vi']) }}" target="_blank"><i class="ri-external-link-line"></i><span>Xem website</span></a></li>
+        <li class="nav-item"><a class="nav-link menu-link" href="{{ \App\Support\LocalizedUrl::route('home', ['locale' => 'vi']) }}" target="_blank"><i class="ri-external-link-line"></i><span>Xem website</span></a></li>
     </ul></div></div></div><div class="vertical-overlay"></div>
     <div class="main-content"><div class="page-content"><div class="container-fluid">
         <div class="row"><div class="col-12"><div class="page-title-box d-sm-flex align-items-center justify-content-between"><h4 class="mb-sm-0">@yield('page_title', 'Tổng quan')</h4></div></div></div>

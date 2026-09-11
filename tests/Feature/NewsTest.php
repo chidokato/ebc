@@ -34,9 +34,9 @@ class NewsTest extends TestCase
         }
         $this->assertDatabaseCount('news_articles', 4);
         foreach (NewsArticle::all() as $article) {
-            $this->get('/'.$article->locale.'/news/'.$article->id)->assertOk()->assertSee($article->title);
+            $this->get(\App\Support\LocalizedUrl::route('news.show', ['locale' => $article->locale, 'news' => $article->id]))->assertOk()->assertSee($article->title);
             $this->get('/admin/news/'.$article->id.'/edit')->assertOk()->assertDontSee('name="translate"', false);
-            $this->get('/'.$article->locale)->assertOk()->assertSee($article->title);
+            $this->get(\App\Support\LocalizedUrl::route('home', ['locale' => $article->locale]))->assertOk()->assertSee($article->title);
         }
         $this->get('/admin/news')->assertOk();
         $this->put('/admin/news/'.$source->id, $this->payload(['title' => 'Đã sửa', 'status' => 'draft']))->assertSessionHasNoErrors();
@@ -102,8 +102,8 @@ class NewsTest extends TestCase
         $this->admin();
         $this->post('/admin/news', $this->payload(['status' => 'draft']))->assertSessionHasNoErrors();
         $article = NewsArticle::firstOrFail();
-        $this->get('/vi/news/'.$article->id)->assertNotFound();
-        $this->get('/vi/news')->assertDontSee($article->title);
+        $this->get('/news/'.$article->id)->assertNotFound();
+        $this->get('/news')->assertDontSee($article->title);
     }
 
     public function test_list_status_switch_publishes_and_unpublishes_only_the_selected_translation(): void
@@ -149,7 +149,7 @@ class NewsTest extends TestCase
         $this->assertStringNotContainsString('script', $article->content);
         $this->assertStringNotContainsString('onerror', $article->content);
         $this->assertStringNotContainsString('onclick', $article->content);
-        $this->get('/vi/news/'.$article->id)->assertOk()->assertSee('<h2>Tiêu đề</h2>', false)->assertSee('<li>Mục một</li>', false);
+        $this->get('/news/'.$article->id)->assertOk()->assertSee('<h2>Tiêu đề</h2>', false)->assertSee('<li>Mục một</li>', false);
         $this->get('/admin/news/'.$article->id.'/edit')->assertOk()->assertSee('ClassicEditor.create', false)->assertSee(e('<strong>Đậm</strong>'), false);
     }
 
