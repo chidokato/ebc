@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    bindScrollTrigger('.elite-club-cta', '#consultation');
+    bindScrollTrigger('.elite-nav-cta, .elite-club-cta, [data-consultation]', '#consultation');
 
     createSwiper('.hero-slider .swiper', {
         spaceBetween: 0,

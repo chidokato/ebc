@@ -31,9 +31,11 @@ class WebsiteSettingController extends Controller
             'remove_favicon' => ['nullable', 'boolean'],
             'white_logo_file' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:5120'],
             'remove_white_logo' => ['nullable', 'boolean'],
+            'social_image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
+            'remove_social_image' => ['nullable', 'boolean'],
         ]);
         $settings = WebsiteSetting::current();
-        foreach (['logo', 'white_logo', 'favicon'] as $asset) {
+        foreach (['logo', 'white_logo', 'favicon', 'social_image'] as $asset) {
             if ($request->boolean('remove_'.$asset)) $data[$asset.'_path'] = null;
             if ($request->hasFile($asset.'_file')) {
                 $file = $request->file($asset.'_file');

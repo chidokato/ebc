@@ -13,6 +13,47 @@ class WebsiteSettingsTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_social_image_is_uploaded_preserved_replaced_and_reset(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        $defaultUrl = WebsiteSetting::current()->social_image_url;
+        $paths = [];
+        try {
+            $this->get(route('admin.settings.edit'))->assertOk()->assertSee('social_image_file')->assertSee($defaultUrl, false);
+            foreach (['share.jpg', 'replacement.png'] as $filename) {
+                $this->put(route('admin.settings.update'), ['title' => 'EBC', 'social_image_file' => UploadedFile::fake()->image($filename, 1200, 630)])
+                    ->assertSessionHasNoErrors()->assertRedirect(route('admin.settings.edit'));
+                $path = WebsiteSetting::current()->social_image_path;
+                $this->assertNotNull($path);
+                $this->assertNotContains($path, $paths);
+                $paths[] = $path;
+                $this->assertFileExists(base_path($path));
+                $this->get(route('home', ['locale' => 'vi']))->assertOk()
+                    ->assertSee('<meta property="og:image" content="'.asset($path).'">', false);
+                $this->get(route('news.index', ['locale' => 'en']))->assertOk()
+                    ->assertSee('<meta property="og:image" content="'.asset($path).'">', false);
+                $this->put(route('admin.settings.update'), ['title' => 'Updated'])->assertSessionHasNoErrors();
+                $this->assertSame($path, WebsiteSetting::current()->social_image_path);
+            }
+            $this->put(route('admin.settings.update'), ['title' => 'EBC', 'remove_social_image' => 1])->assertSessionHasNoErrors();
+            $this->assertNull(WebsiteSetting::current()->social_image_path);
+            $this->get(route('home', ['locale' => 'vi']))->assertOk()
+                ->assertSee('<meta property="og:image" content="'.$defaultUrl.'">', false);
+        } finally {
+            foreach ($paths as $path) File::delete(base_path($path));
+        }
+    }
+
+    public function test_social_image_rejects_invalid_or_oversized_files(): void
+    {
+        $this->actingAs(User::factory()->create(['is_admin' => true]));
+        foreach ([UploadedFile::fake()->create('bad.txt'), UploadedFile::fake()->image('large.jpg')->size(5121)] as $file) {
+            $this->put(route('admin.settings.update'), ['title' => 'EBC', 'social_image_file' => $file])
+                ->assertSessionHasErrors('social_image_file');
+        }
+        $this->assertDatabaseCount('website_settings', 0);
+    }
+
     public function test_booking_email_can_be_saved_validated_and_cleared(): void
     {
         $this->actingAs(User::factory()->create(['is_admin' => true]));

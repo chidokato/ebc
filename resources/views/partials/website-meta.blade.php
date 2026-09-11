@@ -5,4 +5,5 @@
 <meta property="og:title" content="{{ $seoPageTitle }}">
 @if($websiteSettings->seo_description)<meta property="og:description" content="{{ $websiteSettings->seo_description }}">@endif
 <meta property="og:url" content="{{ url()->current() }}">
-@if($websiteSettings->logo_path)<meta property="og:image" content="{{ asset($websiteSettings->logo_path) }}">@endif
+<meta property="og:image" content="{{ $websiteSettings->social_image_url }}">
+<meta property="og:image:alt" content="{{ $websiteSettings->title }}">

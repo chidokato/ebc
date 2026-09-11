@@ -5,7 +5,7 @@ body.booking-popup-open {overflow:hidden;}
 .booking-popup-card {background:linear-gradient(180deg,#f3e9dc 0%,#f3e9dc 52%,#d2b18a 100%);border-radius:22px;padding:26px 10% 26px 25%;position:relative;}
 .booking-popup-photo {position:absolute;left:0;top:17%;width:44%;height:65%;object-fit:cover;border-radius:20px;z-index:1;}
 .booking-popup-close {position:absolute;right:12px;top:10px;border:0;border-radius:50%;background:rgba(255,255,255,.65);width:34px;height:34px;line-height:1;font-size:27px;color:#705033;cursor:pointer;}
-.booking-popup h2 {font-family:'Wasted Vindey',Georgia,serif;font-size:clamp(36px,5vw,66px);font-weight:400;white-space:nowrap;line-height:1.1;margin:0;text-align:center;}
+.booking-popup h2 {font-family:'Wasted Vindey',Georgia,serif;font-size:clamp(36px,5vw,66px);font-weight:400;overflow-wrap:anywhere;line-height:1.1;margin:0 0 12px;text-align:center;}
 .booking-popup h2 em,.booking-popup-hours em {font-family:'High Spirited',cursive;font-weight:400;font-style:normal;text-transform:none;}
 .booking-popup h2 em {font-size:1.15em; line-height: 2rem}
 .booking-popup-offer {display:flex;align-items:center;justify-content:center;gap:4px;margin-top:-8px;}
@@ -14,7 +14,8 @@ body.booking-popup-open {overflow:hidden;}
 .booking-popup-hours strong {display:block;font-size:12px;margin-bottom:5px;}
 .booking-popup-hours span {display:block;}
 .booking-popup-discount {display:block;width:calc(100% - 114px);max-width:230px;min-width:0;height:auto;object-fit:contain; margin-left: 10px}
-.booking-popup-subtitle {font-family:'Wasted Vindey',Georgia,serif;font-size:clamp(16px,2vw,23px);text-align:center;white-space:nowrap;margin:15px 0 28px;}
+.booking-popup-custom-offer {white-space:pre-line;overflow-wrap:anywhere;flex:1;min-width:0;}
+.booking-popup-subtitle {font-family:'Wasted Vindey',Georgia,serif;font-size:clamp(16px,2vw,23px);text-align:center;white-space:pre-line;overflow-wrap:anywhere;margin:15px 0 28px;}
 .booking-popup form {margin:0;}
 .booking-popup label {display:block;font-size:15px;margin:0 0 4px;}
 .booking-popup input {display:block;width:100%;min-width:0;border:1px solid #b7b4af;border-radius:24px;background:#fff;color:#494031;font-family:inherit;font-size:16px;padding:9px 20px;height:42px;margin:0 0 9px;box-shadow:inset 0 1px 2px #00000008;}
@@ -36,7 +37,7 @@ body.booking-popup-open {overflow:hidden;}
     .booking-popup h2 {font-size:48px;}
     .booking-popup-discount {max-width:260px;}
     .booking-popup-hours em {font-size:60px;}
-    .booking-popup-subtitle {font-size:19px;margin-bottom:20px;white-space:normal;}
+    .booking-popup-subtitle {font-size:19px;margin-bottom:20px;}
     .booking-popup label {font-size:13px;}
     .booking-popup-fields {gap:8px;}
     .booking-popup-fields input {font-size:14px;}

@@ -39,7 +39,7 @@
 			<div class="elite-nav-right">
 				@foreach ($headerMenus->slice(2) as $menu)
 					@if($loop->last)
-						<button type="button" class="elite-nav-cta" data-open-booking aria-haspopup="dialog" aria-controls="booking-popup">{{ $menu->label }}</button>
+						<a class="elite-nav-cta" href="{{ route('home', ['locale' => $locale]) }}#consultation">{{ $menu->label }}</a>
 					@else
 						<a href="{{ $menu->url }}">{{ $menu->label }}</a>
 					@endif
@@ -69,7 +69,7 @@
 							<div class="hero-text">
 								@if(filled($slider->title))<h1>{{ $slider->title }}</h1>@endif
 								@if ($slider->description)<p>{{ $slider->description }}</p>@endif
-								@if ($slider->button_label)<button type="button" class="hero-consult-button d-inline-block text-decoration-none" data-open-booking aria-haspopup="dialog" aria-controls="booking-popup">{{ $slider->button_label }}</button>@endif
+								@if ($slider->button_label)<button type="button" class="hero-consult-button d-inline-block text-decoration-none" @if($popupSettings->is_enabled) data-open-booking aria-haspopup="dialog" aria-controls="booking-popup" @else data-consultation @endif>{{ $slider->button_label }}</button>@endif
 							</div>
 						</div>
 						@endif
@@ -156,7 +156,7 @@
 							<h3 class="font-wasted-vindey">{{ $venue->title }}</h3>
 							<div class="venue-content">{!! $venue->content !!}</div>
 							@include('partials.section-quick-items', ['quickSection' => $venue])
-							<button type="button" class="ballroom-booking d-inline-block text-decoration-none mt-3" data-open-booking aria-haspopup="dialog" aria-controls="booking-popup">{{ $venue->link_label ?: ($translations['Đặt lịch hẹn'] ?? 'Đặt lịch hẹn') }}</button>
+							<button type="button" class="ballroom-booking d-inline-block text-decoration-none mt-3" @if($popupSettings->is_enabled) data-open-booking aria-haspopup="dialog" aria-controls="booking-popup" @else data-consultation @endif>{{ $venue->link_label ?: ($translations['Đặt lịch hẹn'] ?? 'Đặt lịch hẹn') }}</button>
 						</div>
 					</div>
 				</article>

@@ -25,6 +25,18 @@
 </div></div>
 <div class="card"><div class="card-body">
     <h5>SEO</h5>
+    <div class="mb-3">
+        <label class="form-label" for="social_image_file">Ảnh chia sẻ mạng xã hội (Zalo / Facebook)</label>
+        <input class="form-control @error('social_image_file') is-invalid @enderror" type="file" id="social_image_file" name="social_image_file" accept=".jpg,.jpeg,.png" aria-describedby="social_image_help">
+        <small class="text-muted" id="social_image_help">JPG, PNG; tối đa 5 MB. Nên dùng ảnh ngang 1200 × 630 px. Áp dụng cho tất cả ngôn ngữ, trang chủ và tin tức.</small>
+        @error('social_image_file')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        <div class="mt-2"><img src="{{ $settings->social_image_url }}" alt="Ảnh chia sẻ mạng xã hội hiện tại" class="rounded border" style="max-width:100%;width:360px;max-height:200px;object-fit:contain"></div>
+        @if($settings->social_image_path)
+        <label class="form-check mt-2"><input type="checkbox" class="form-check-input" name="remove_social_image" value="1" @checked(old('remove_social_image'))><span class="form-check-label">Xóa ảnh đã tải lên, dùng ảnh mặc định</span></label>
+        @else
+        <small class="text-muted">Đang dùng ảnh chia sẻ mặc định.</small>
+        @endif
+    </div>
     <div class="mb-3"><label class="form-label" for="seo_title">Tiêu đề SEO trang chủ</label><input class="form-control" id="seo_title" name="seo_title" maxlength="255" value="{{ old('seo_title', $settings->seo_title) }}"><small class="text-muted">Để trống để dùng tiêu đề website. Bài tin tức vẫn dùng tiêu đề bài viết.</small></div>
     <div class="mb-3"><label class="form-label" for="seo_description">Mô tả SEO</label><textarea class="form-control" id="seo_description" name="seo_description" rows="3" maxlength="2000">{{ old('seo_description', $settings->seo_description) }}</textarea></div>
     <div><label class="form-label" for="seo_keywords">Từ khóa SEO</label><input class="form-control" id="seo_keywords" name="seo_keywords" maxlength="1000" value="{{ old('seo_keywords', $settings->seo_keywords) }}" placeholder="Các từ khóa cách nhau bằng dấu phẩy"></div>

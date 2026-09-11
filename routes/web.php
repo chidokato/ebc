@@ -28,6 +28,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [\App\Http\Controllers\Admin\WebsiteSettingController::class, 'update'])->name('settings.update');
+        Route::get('popup-settings', [\App\Http\Controllers\Admin\PopupSettingController::class, 'edit'])->name('popup-settings.edit');
+        Route::put('popup-settings', [\App\Http\Controllers\Admin\PopupSettingController::class, 'update'])->name('popup-settings.update');
         Route::post('logout', [AdminController::class, 'logout'])->name('logout');
         Route::resource('users', UserController::class)->except('show');
         Route::resource('menus', MenuController::class)->except('show');
